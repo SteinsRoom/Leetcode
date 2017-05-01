@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int arrayPairSum(vector<int>& nums) {
+        sort(nums.begin(),nums.end(),less<int>());
+        auto pfIt = nums.begin();
+        int result = 0;
+        for(int i = 0;i<nums.size();){
+            result+=nums[i];
+            i+=2;
+        }
+        return result;
+    }
+};
