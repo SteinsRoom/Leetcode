@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> countSmaller(vector<int>& nums) {
+        vector<int> copy = nums;
+        vector<int> result;
+        sort(copy.begin(),copy.end());
+        for(int i =0;i<nums.size();i++){
+            int left = 0,right = copy.size()-1;
+            while(left<=right){
+                int mid = (left+right)/2;
+                if(copy[mid] == nums[i]){
+                    while(mid!=0 &&(copy[mid-1]==nums[i]))
+                    mid-=1;
+                    result.push_back(mid);
+                    vector<int>::iterator it = copy.begin()+mid;
+                    copy.erase(it);
+                    break;
+                }else if(copy[mid] < nums[i]){
+                    left= mid+1;
+                }else{
+                    right= mid-1;
+                }
+            }
+        }
+        return result;
+    }         
+};
