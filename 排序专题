@@ -1,0 +1,71 @@
+冒泡排序：
+    思路：最原始的冒泡排序需要排序n趟，每一趟中需要从末尾或开头开始两两比较将最小的排到前面或者最大的排到后面，每一趟中前n或后n项已有序不需要在排序。
+    代码：void sortIntegers(vector<int>& A) {
+        // Write your code here
+        for(int i =0; i<A.size();i++){
+          for(int j=A.size()-1;j>i;j--){
+            if(A[j-1]>A[j]){
+              int temp = A[j-1];
+              A[j-1] = A[j];
+              A[j]=temp;
+            }
+          }
+        }
+    }
+  
+改进的冒泡排序：
+    思路：改进无序区中的有序元素也需要两两比较，同时对于内层循环，设置标志位pos=n，如果在该层循环运行完后仍然值不变说明已经排好序可以跳出循环。
+         进一步对于无序区中的数据因为是两两比较若其中某次比较后不再发生交换则说明在此之后的数据已经排好序，而不需要再对该部分数据进行比较，
+         用pos记录该位置
+    void sortIntegers(vector<int>& A) {
+        // Write your code here
+        int pos=0;
+        int n = A.size();
+        while(pos!=n){
+            int bound = pos;
+            pos = n;//第二部改进
+            for(int i = n-1;i>bound;i--){
+                if(A[i-1]>A[i]){
+                    int temp = A[i-1];
+                    A[i-1]=A[i];
+                    A[i]=temp;
+                    pos = i;//设置标志位，仅需对[bound,n-1]的数据进行两两比较
+                }
+            }
+        }
+    }
+    
+    直接插入排序：
+    思路：从前面或后面排序均可，每执行一次产生一个有序数，每次从无序序列中取出一个数作为key进行比较，为提高效率需要移位时将前面的数向后挪一位
+         （对于从前面排序的来说），执行n-1次
+    代码： 
+    void sortIntegers(vector<int>& A) {
+        // Write your code here
+        int n =A.size();
+        if(n>1){
+          for(int i = 1;i<n;i++){ ///注意该处边界，最后一个值也要遍历到
+            int key = A[i];
+            while( i >0 && A[i-1]>key){
+            A[i]=A[i-1];
+            i--;
+            }
+            A[i]=key;
+          }
+        }
+    }
+    
+    从后面排序：
+    void sortIntegers(vector<int>& A) {
+        // Write your code here
+      int n = A.size();
+      if(n>1){
+      for(int i = n-2;i>=0;i--){
+        int key = A[i];
+        while( i<n-1 && A[i+1]<key){ ///此处决定正序还是倒序排列
+        A[i] = A[i+1];
+        i++;
+        }
+        A[i]=key;
+        }
+      }
+    }
