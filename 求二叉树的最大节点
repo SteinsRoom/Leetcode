@@ -1,0 +1,19 @@
+求二叉树的最大节点：
+思路：使用非递归的二叉树前序遍历，为了进行比较另写一函数进行遍历比较；
+代码：
+TreeNode* maxNode(TreeNode* root) {
+        // Write your code here
+        if(root == NULL) return NULL;
+        auto a = new TreeNode(-1000);
+        max(root,a);
+        return a;
+    }
+    
+    TreeNode* max(TreeNode* _root,TreeNode*& _a){
+        if(_root == NULL) return _a;
+        if(_root->val > _a->val){
+            _a =_root;
+        }
+        max(_root->left,_a);
+        max(_root->right,_a);
+    }
