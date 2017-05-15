@@ -1,0 +1,45 @@
+二叉树的前序遍历：
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ */
+非递归：
+class Solution {
+public:
+    /**
+     * @param root: The root of binary tree.
+     * @return: Preorder in vector which contains node values.
+     */
+    vector<int> preorderTraversal(TreeNode *root) {
+        // write your code here
+        auto R = root;
+        //int top = -1;
+        while((S.empty() == false) || R!= NULL){
+            
+            if(R != NULL){
+                result.push_back(R->val);
+                S.push(R);
+                R = R->left;
+            }else{
+                R = S.top();
+                S.pop();
+                R=R->right;
+            }
+            
+        }
+        
+        return result;
+        
+    }
+    
+    vector<int> result={};
+    stack<TreeNode *> S;
+};
