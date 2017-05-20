@@ -1,0 +1,27 @@
+思路1：题目要求要求返回不重复的元素数目同时前n个元素不重复，这里同时将nums中的相同元素删除
+  代码：int removeDuplicates(vector<int>& nums) {
+        int count = 1;
+        auto it = nums.begin();
+        while(it!= nums.end()){
+            while((it+1)!=nums.end() && *(it+1) == *it){
+                nums.erase(it+1);
+            }
+            it++;
+            
+        }
+        return nums.size();
+    }
+    
+思路2：29ms
+  代码：int removeDuplicates(vector<int>& nums) {
+        if(nums.size() == 0) return 0;
+        int count = 1;
+        for(int i =1;i<nums.size();i++){
+            if(nums[i]!=nums[i-1]){
+                count++;
+                nums[count-1] =nums[i];
+            }
+        }
+        return count;
+    }
+  
