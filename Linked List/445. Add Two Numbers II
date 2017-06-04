@@ -1,0 +1,70 @@
+思路：
+利用栈来存储两个链表中的数据，需要注意进位的问题，分为公共部分进位，单一栈中进位、多添加一位等情况
+
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        //int m = Lenth(l1);
+        // n = Lenth(l2);
+        if(l1 == NULL) return l2;
+        if(l2 == NULL) return l1;
+        auto p = l1;
+        auto q = l2;
+        int extra = 0;
+        stack<int> s1,s2; 
+        ListNode* head = new ListNode(0);
+        while(p!=NULL){
+            s1.push(p->val);
+            p = p->next;
+        }
+        while(q!=NULL){
+            s2.push(q->val);
+            q=q->next;
+        }
+        while((s1.empty() == false) && (s2.empty() == false)){
+            int he = s1.top()+s2.top()+extra;
+            s1.pop();
+            s2.pop();
+            ListNode* newnode = new ListNode(he%10);
+            newnode->next = head->next;
+            head->next = newnode;
+            extra = he/10;
+        }
+        if(s1.empty() == true && s2.empty() == false){
+            while(s2.empty()!=true){
+            int he = s2.top()+extra;
+            ListNode* newnode = new ListNode(he%10);
+            s2.pop();
+            newnode->next = head->next;
+            head->next = newnode;
+            extra = he/10;
+            }
+            if(extra){
+            ListNode* newnode = new ListNode(1);
+            newnode->next = head->next;
+            head->next = newnode;
+            }
+            
+        }else if(s2.empty() == true && s1.empty() == false){
+            while(s1.empty()!=true){
+            int he = s1.top()+extra;    
+            ListNode* newnode = new ListNode(he%10);
+            s1.pop();
+            newnode->next = head->next;
+            head->next = newnode;
+            extra = he/10;
+            }
+            if(extra){
+            ListNode* newnode = new ListNode(1);
+            newnode->next = head->next;
+            head->next = newnode;
+            }
+        }else if((s1.empty() == true) && (s2.empty() == true) && extra ==1){
+            ListNode* newnode = new ListNode(1);
+            newnode->next = head->next;
+            head->next = newnode;
+        }
+        
+        return head->next;
+        
+    }
