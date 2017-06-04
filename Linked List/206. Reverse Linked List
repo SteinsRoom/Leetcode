@@ -13,3 +13,17 @@ public:
         return phead->next;
     }
 };
+
+递归：
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        if(head == NULL || head->next == NULL) return head;
+        
+        auto r = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL; 
+       
+        return r;
+    }
+};
