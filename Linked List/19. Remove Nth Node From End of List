@@ -50,3 +50,26 @@ public:
         return newhead->next;
     }
 };
+
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if(head == NULL || head->next == NULL) return head;
+        auto root = new ListNode(0);
+        root->next = head;
+        auto p = head->next;
+        while(p!=NULL){
+            auto m = root;
+            int val = p->val;
+            while(m->next!=NULL && m->next->val < val){
+                m = m->next;
+            }
+            auto r = m->next;
+            m->next = p;
+            p->next = r;
+            
+        }
+        return root->next;
+        
+    }
+};
