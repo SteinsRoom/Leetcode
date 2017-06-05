@@ -1,0 +1,48 @@
+代码：39ms
+class Solution {
+public:
+    vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+        int realr = nums.size();
+        int realc = nums[0].size();
+        if(realc*realr != r*c ) return nums;
+        
+        vector<int> addnum(r*c,0);
+        for(int i = 0;i<realr;i++){
+            for(int j = 0;j<realc;j++){
+                addnum[i*realc+j] = nums[i][j];
+            }
+        }
+        vector<vector<int>> newnums(r ,vector<int>(c));
+        for(int i = 0;i<r;i++){
+            for(int j = 0;j<c;j++){
+                newnums[i][j] = addnum[i*c+j];
+            }
+        }
+        return newnums;
+        
+    }
+};
+最快：36ms   不需要建立辅助vector，直接进行传值
+class Solution {
+public:
+    vector<vector<int>> matrixReshape(vector<vector<int>>& nums, int r, int c) {
+        if (nums.empty() || nums[0].empty()) return nums;
+
+        int M = nums.size(), N = nums[0].size();
+        if (M * N != r * c) return nums;
+
+        vector<vector<int>> reshape(r, vector<int>(c));
+        int x = 0, y = 0;
+        for (int i = 0; i < r; ++i) {
+            for (int j = 0; j < c; ++j) {
+                reshape[i][j] = nums[x][y];
+                if (++y == N) {
+                    y = 0;
+                    ++x;
+                }
+            }
+        }
+
+        return reshape;
+    }
+};
