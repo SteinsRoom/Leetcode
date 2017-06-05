@@ -1,6 +1,6 @@
 思路：首先让指针p指向头结点，然后使其移动n个距离，如果p为空说明删除的是头结点，返回head的下一节点。再令指针m指向头结点，m与p同步移动直至p为尾节点，
 此时m为倒数第n个元素的前一节点，删除节点即可。
-代码：
+代码： 6ms
 class Solution {
 public:
     ListNode* removeNthFromEnd(ListNode* head, int n) {
@@ -22,5 +22,31 @@ public:
         m->next = m->next->next;
         return head;
         
+    }
+};
+
+最快：3ms
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        /////
+        ListNode* newhead= new ListNode(0);
+        newhead->next=head;
+        ListNode* prep=newhead;
+        ListNode* p1 =newhead;
+        ListNode* p2 =newhead;
+        while(n-->0)
+        {
+            p2 = p2->next;
+        }
+        p1 = p1-> next;
+        while(p2->next)
+        {
+            p2=p2->next;
+            p1=p1->next;
+            prep=prep->next;
+        }
+        prep->next=p1->next;
+        return newhead->next;
     }
 };
