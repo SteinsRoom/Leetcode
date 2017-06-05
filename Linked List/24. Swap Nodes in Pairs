@@ -30,11 +30,12 @@ public:
     ListNode* swapPairs(ListNode* head) {
         if(head == NULL || head->next == NULL) return head;
         int count = 0;
-        ListNode* first = NULL;
-        ListNode* second = NULL;
-        ListNode* nextNode = NULL;
-        ListNode* lastNode = NULL;
+        //ListNode* first = NULL;//这里声明的方式不对,指针每个前面都要加*
+        //ListNode* second = NULL;
+        //ListNode* nextNode = NULL;
+        //ListNode* lastNode = NULL;
         ListNode* root = head->next;
+        ListNode *first,*second,*nextNode,*lastNode;
         while(head != NULL && head->next !=NULL){
             first = head;
             second = first->next;
