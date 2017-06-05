@@ -1,0 +1,55 @@
+有问题：
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head == NULL || head->next == NULL) return head;
+        auto first = head;
+        auto second = head->next;
+        auto newhead = second;
+        while((first->next->next != NULL) && (second->next->next != NULL)){
+            auto r = second->next;
+            second->next = first;
+            first->next = r;
+            first = r;
+            second = first->next;  
+        }
+        auto r = second->next;
+        second->next = first;
+        first->next = r;
+        return newhead;
+     };
+        
+};
+
+
+问题原因： 没有考虑到初始的两个节点在交换次序后不需要设置前面结点与交换后结点的连接关系，因此需要设置count来判断是否是初始节点，对于
+          非初始节点对除了需要交换位置外，还需设置前一节点与当前交换后的第一个节点的连接关系。
+正确代码：
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head == NULL || head->next == NULL) return head;
+        int count = 0;
+        ListNode* first = NULL;
+        ListNode* second = NULL;
+        ListNode* nextNode = NULL;
+        ListNode* lastNode = NULL;
+        ListNode* root = head->next;
+        while(head != NULL && head->next !=NULL){
+            first = head;
+            second = first->next;
+            nextNode = second->next;
+            first->next = nextNode;
+            second->next = first;
+            if(count == 0){
+                count = 1;
+            }else{
+                lastNode->next = second;
+            }
+            lastNode = first;
+            head = nextNode;
+        }
+        return root;
+    }
+};
+          
