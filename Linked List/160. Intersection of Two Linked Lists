@@ -1,0 +1,37 @@
+思路：求两个链表的公共部分开始结点，首先求出两个链表的长度，然后让长的链表的头结点移动长度之差个距离是两个链表的节点在同一位置，同步移动两个节点
+     判断两个结点是否相等。
+代码：class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA == NULL || headB == NULL) return NULL;
+        int lengthA = 0;
+        int lengthB = 0;
+        auto pA = headA,pB = headB;
+        while(pA!=NULL){
+            lengthA++;
+            pA = pA->next;
+        }
+        while(pB!=NULL){
+            lengthB++;
+            pB = pB->next;
+        }
+        pA = headA,pB = headB;
+        if(lengthA > lengthB){
+            for(int i = 0;i<lengthA-lengthB;i++){
+                pA = pA->next;
+            }
+        }else if(lengthA < lengthB){
+            for(int i = 0;i<lengthB-lengthA;i++){
+                pB = pB->next;
+            }
+        }
+        while(pA != NULL && pB != NULL){
+            if(pA == pB){
+                return pA;
+            }
+            pA = pA->next;
+            pB = pB->next;
+        }
+        return NULL;
+    }
+};
