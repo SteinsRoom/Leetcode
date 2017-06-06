@@ -1,0 +1,45 @@
+思路：可以分为两种情况，首先是首元素小于给定值x的情况，创建firstlinkr指向head，移动firstlinkr至第一个比x的值大的前一节点，将此节点作为头结点，
+     此节点以后的两个节点分别为pre，p，找到p的值比x小的节点，插入到头结点firstlinkr之后，pre是方便删除结点。
+     接着是首元素大于指定值x的情况。此时第一个比x的值大的前一节点为空，需要新建一节点作为头结点，其余步骤与上一情况相同。但是需要vfirstlinkr记录
+     初始头结点位置，便于最后返回首个节点的指针。最后根据情况不同返回不同的指针。
+代码：已最优 6ms
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(head ==NULL || head->next == NULL) return head;
+        ListNode* firstlinkr;
+        ListNode* vfirstlinkr;
+        if(head->val >= x){
+            ListNode* virtualfirstlinkr = new ListNode(0);
+            virtualfirstlinkr->next = head;
+            vfirstlinkr = virtualfirstlinkr;
+            firstlinkr = virtualfirstlinkr;
+        }else{
+        firstlinkr = head;
+        }
+        while(firstlinkr->next != NULL && firstlinkr->next->val < x){
+            firstlinkr = firstlinkr->next;
+        }
+        if(firstlinkr->next == NULL) return head;
+        ListNode* pre = firstlinkr->next;
+        ListNode* p = pre->next;
+        while(p!=NULL){
+            if(p->val <x){
+                ListNode* firsttempr = firstlinkr->next;
+                pre->next = p->next;
+                firstlinkr->next = p;
+                p->next = firsttempr;
+                firstlinkr = p;
+                p = pre->next;
+                continue;
+            }
+            pre = pre->next;
+            p = p->next;
+        }
+        if(head->val >= x){
+            return vfirstlinkr->next;}
+        else{
+            return head;
+        }
+    }
+};
