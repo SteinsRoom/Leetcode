@@ -1,0 +1,21 @@
+思路：去除链表中与val值相同的首元素，然后遍历每个节点，相同的删除
+代码：29ms
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        if(head == NULL) return head;
+        while(head != NULL && head->val == val){
+            head = head->next;
+        }
+        if(head == NULL) return head;
+        ListNode* p = head;
+        while(p != NULL && p->next!=NULL){
+            if(p->next->val == val){
+                p->next = p->next->next;
+            }else{
+            p = p->next;
+            }
+        }
+        return head;
+    }
+};
