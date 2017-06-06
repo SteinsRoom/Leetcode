@@ -44,3 +44,29 @@ public:
         return false;
     }
 };
+
+3.求环的连接点 
+代码： 已最优 9ms
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(head == NULL || head->next == NULL) return NULL;
+        ListNode* slow,*fast,*begin,*peng;
+        slow  = fast = begin = head;
+        while(fast!=NULL && fast->next != NULL){
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast){
+                peng = slow;
+                break;
+            }
+        }
+        if(fast==NULL || fast->next == NULL) return NULL;
+        while(begin != NULL && begin != slow){
+            slow = slow->next;
+            begin = begin->next;
+        }
+        return begin;
+        
+    }
+};
