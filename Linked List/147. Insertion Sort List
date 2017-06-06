@@ -1,0 +1,62 @@
+思路：创建一个新的头结点，令头结点连接链表中的第一个节点，p指向链表中的下一个节点，**注意头结点连接的第一个节点的nex必须置空**，然后依次遍历链表中的
+     每一个元素，采用直接插入排序。
+代码： 49ms
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if(head == NULL || head->next == NULL) return head;
+        auto root = new ListNode(0);
+        root->next = head;
+        auto p = head->next;
+        head->next = NULL;
+        while(p!=NULL){
+            auto m = root;
+            auto cur = p;
+            p = p->next;
+            int val = cur->val;  
+            while((m->next!=NULL) && (m->next->val < val)){
+                m = m->next;
+            }
+            auto r = m->next;
+            m->next = cur;
+            cur->next = r;
+            
+            
+        }
+        return root->next;
+        
+    }
+};
+
+更优：19ms
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if(NULL == head || NULL == head->next)
+            return head;
+        
+        ListNode* dummy = new ListNode(INT_MIN);
+        dummy->next = head;
+        
+        ListNode* cur = dummy;
+        while(cur->next)
+        {
+            if(cur->val > cur->next->val)
+            {
+                ListNode* p = dummy;
+                ListNode* next = cur->next;
+                while(p->next && p->next->val < next->val)
+                    p = p->next;
+                ListNode* node = p->next;
+                cur->next = next->next;
+                next->next = node;
+                p->next = next;
+            }
+            else
+            {
+                cur = cur->next;
+            }
+        }
+        return dummy->next;
+    }
+};
