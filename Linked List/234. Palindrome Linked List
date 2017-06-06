@@ -1,0 +1,76 @@
+判断链表是否是回文链表
+原始思路：获取链表长度，令指针移动到后半部分的第一个链表元素上，采用头插法重建后半部分链表并与前半部分比较。
+代码：32ms //不使用auto 23ms
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        if(head == NULL || head->next == NULL) return true;
+        int len = 0;
+        auto p = head;
+        while(p!=NULL){
+            len++;
+            p = p->next;
+        }
+        int dis = len/2;
+        int IsOdd = len%2;
+        p = head;
+        for(int i = 0;i<dis;i++){
+            p = p->next;
+        }
+        if(IsOdd == 1){
+            p = p->next;
+        }
+        auto newhead = new ListNode(0);
+        while(p!=NULL){
+            auto cur = p;
+            p = p->next;
+            auto r = newhead->next;
+            newhead->next = cur;
+            cur->next = r;
+        }
+        p  = head;
+        auto q = newhead->next;
+        while(p!=NULL && q!=NULL){
+            if(p->val != q->val){
+                return false;
+            }
+            p = p->next;
+            q = q->next;
+        }
+        return true;
+        
+    }
+};
+
+
+更优：18ms   思路貌似一样？？
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        if(head==NULL||head->next==NULL)
+        return true;
+        ListNode *slow=head,*fast=head;
+        while(fast->next!=NULL&&fast->next->next!=NULL)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        ListNode *cur=slow->next;
+        ListNode *pre=NULL,*next=NULL;
+        while(cur!=NULL)
+        {
+            next=cur->next;
+            cur->next=pre;
+            pre=cur;
+            cur=next;
+        }
+        while(pre!=NULL)
+        {
+            if(pre->val!=head->val)
+                return false;
+            head=head->next;
+            pre=pre->next;
+        }
+        return true;
+    }
+};
