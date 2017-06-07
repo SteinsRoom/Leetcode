@@ -46,6 +46,8 @@ public:
 
 
 最优：19ms
+改进：头插法插入节点可以简化，每次令head的next指向p的next，另外判断是否转换完成可以先取得链表的长度，然后根据k与length的关系判断是否结束，
+      每完成一节length-k
 代码：
 class Solution {
 public:
