@@ -1,0 +1,72 @@
+思路：（花了很长时间1.5h，不是最优解）首先找到新序列的头结点。新建一个头结点，p指向它并向后遍历k个位置，若p为空则输出head，否则p指向位置为新的头结点。 
+      每k各节点为一节，head指向新节的首个节点，root指向head的前节点，p每次循环重置为root（遍历寻找尾节点用）。对于每次循环（判断条件head不为空），找到当前节的尾节点
+      设为root，p指向当前head的后一节点，以root为头结点进行头插法建立新链，head的next置为尾节点r的下一位置，不断循环。
+代码： 26ms
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(head == NULL || k == 1) return head;
+        ListNode* root = new ListNode(0);
+        root->next = head;
+        ListNode* p = root,*r;
+        int count = 0;
+        while(p!=NULL && count<k){
+            p = p->next;
+            count++;
+        }
+        if(p == NULL) return head;
+        ListNode* newhead = p;
+        p = root;
+        while(head!= NULL){
+            int count = 0;
+            while(count < k){
+                p = p->next;
+                if(p == NULL)  return newhead;
+                count++;
+            }
+            r = p;
+            p = head->next;
+            head->next = r->next;
+            ListNode* temp3 = head;
+            head = r->next;
+            while(p!=head){
+                ListNode* temp1 = root->next;
+                ListNode* temp2 = p->next;
+                root->next = p;
+                p->next = temp1;
+                p = temp2;
+            }
+            root = temp3;
+            p = root;
+        }
+        return newhead;
+        
+    }   
+};
+
+
+最优：19ms
+代码：
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode dummy(0);
+        ListNode *pre = &dummy;
+        ListNode *cur = pre;
+        dummy.next = head;
+        int n=0;
+        while (cur=cur->next) n++;
+        while (n>=k) {
+            cur=pre->next;
+            for (int i=1; i<k; ++i) {
+                ListNode *tmp = cur->next;
+                cur->next = tmp->next;
+                tmp->next = pre->next;
+                pre->next = tmp;
+            }
+            pre=cur;
+            n-=k;
+        }
+        return dummy.next;
+    }
+};
