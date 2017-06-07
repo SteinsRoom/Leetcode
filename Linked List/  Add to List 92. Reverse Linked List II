@@ -1,0 +1,34 @@
+代码：已最优 3ms
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        if(head == NULL || m == n) return head;
+        ListNode *newhead = new ListNode(0);
+        newhead->next = head;
+        ListNode *pminpre=newhead,*pmax = newhead,*p,*r,*temp,*k;
+        int count = 1;
+        while(count<m){
+            pminpre = pminpre->next;
+            count++;
+        }
+        count=0;
+        while(count<n){
+            pmax = pmax->next;
+            count++;
+        }
+        p = pminpre->next;
+        r= p->next;
+        p->next = pmax->next;
+        p = r;
+        k = pmax->next;
+        while(p!=k){
+            r = pminpre->next;
+            temp = p->next;
+            pminpre->next = p;
+            p->next = r;
+            p = temp;
+        }
+        return newhead->next;
+        
+    }
+};
