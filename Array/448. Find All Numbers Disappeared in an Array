@@ -1,0 +1,50 @@
+题目含义：
+给定一个数组，其中的元素包含1到n的数，有一些数字重复出现，要求找出1到n中没有的数字组成数组返回。要求不采用额外空间（返回的数组不算）和O(n)的时间复杂度
+思路：
+我的：新建数组，用类似桶排序来做，但貌似不满足空间复杂度？
+别人的：
+1.遍历数组中元素，将元素的值m作为元素序号，nums[m] = nums[m]>0 ? -nums[m]:nums[m] 用元素的正负表示是否已有该值。最后在遍历一边若大于零说明两次访问过
+ 插入新数组中。
+ 
+ 代码：
+ 我的：
+ class Solution {
+public:
+    vector<int> findDisappearedNumbers(vector<int>& nums) {
+        int size = nums.size();
+        if(size == 0) return nums;
+        int length = 0;
+        vector<int> newlist(size+1);
+        for(int i = 0;i<size;i++){
+            newlist[nums[i]]=1;
+        }
+        for(int i = 1;i<=size;i++){
+            if(newlist[i] == 0){
+                newlist[length++] = i;
+            }
+        }
+        newlist.resize(length);
+        return newlist;
+    }
+};
+
+别人的：
+class Solution {
+public:
+    vector<int> findDisappearedNumbers(vector<int>& nums) {
+        int size = nums.size();
+        if(size == 0) return nums;
+        int length = 0;
+        vector<int> newlist;
+        for(int i = 0;i<size;i++){
+            int m = abs(nums[i])-1;
+            nums[m] = nums[m]>0 ?-nums[m]:nums[m];
+        }
+        for(int i = 0;i<size;i++){
+            if(nums[i] > 0){
+                newlist.push_back(i+1);
+            }
+        }
+        return newlist;
+    }
+};
