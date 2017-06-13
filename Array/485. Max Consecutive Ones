@@ -1,0 +1,35 @@
+题目要求：
+给定仅有0,1的一个序列，要求输出序列中最大连续1的出现次数
+思路：
+设置head，next，对于大小为0,1的情况单独处理，对于循环条件head<=size-1（next可以==size），如果head == 1，num =1，接着看next是否<size,
+nums[next]是否等于1，num统计连续的1的个数，next不断向后移动。如果head == 0，head = next，next++。
+代码：
+class Solution {
+public:
+    int findMaxConsecutiveOnes(vector<int>& nums) {
+        int maxnum = 0,head = 0,next = 1;
+        int size = nums.size();
+        if(size == 0) return 0;
+        if(size == 1 && nums[0] == 1) return 1;
+        while(head <= size-1){
+            if(nums[head] ==1){
+                int num = 1;
+                if(next<size && nums[next] == 1){
+                    while(next<=size-1 && nums[next] == 1){
+                        num++;
+                        next++;
+                    }
+                }
+                if(num>=maxnum) maxnum = num;
+                head = next;
+                next = next+1;
+            }else{
+            head = next;
+            next++;
+            }
+        }
+        return maxnum;
+        
+        
+    }
+};
