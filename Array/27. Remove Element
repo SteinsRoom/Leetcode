@@ -1,0 +1,70 @@
+题目含义：
+删除数组中等于val的元素，并返回剩余元素的长度，要求剩余元素需要在原数组的前length个位置。
+思路：
+遍历整个数组，如果遍历的值与val不同，将length位置的值赋值为该值，并且length++;
+代码：
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        if(nums.size() == 0) return 0;
+        int size = nums.size();
+        int length = 0;
+        int next = 0;
+        while(next<size){
+            if(nums[next]!=val){
+                nums[length] = nums[next];
+                length++;
+                next++;
+            }else{
+                while(next<size && nums[next]==val){
+                    next++;
+                }
+                if(next == size) break;
+                if(nums[next]!=val){
+                    nums[length] = nums[next];
+                    length++;
+                    next++;
+                }
+            }
+        }
+        return length;
+        
+    }
+};
+
+
+更简洁：
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        if(nums.size() == 0) return 0;
+        int size = nums.size();
+        int length = 0;
+        for(int i = 0;i<size;i++){
+            if(nums[i]!=val){
+                nums[length++] = nums[i];
+            }
+        }
+        return length;
+        
+    }
+};
+
+使用erase：
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+    
+        for(int i = 0;  i < nums.size(); i++){
+            
+            if(nums.at(i)  ==  val)
+            {
+               
+                nums.erase(nums.begin()+i--);
+            }
+        }
+            
+        
+        return nums.size();
+    }
+};
