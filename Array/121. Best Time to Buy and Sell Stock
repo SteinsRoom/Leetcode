@@ -1,0 +1,38 @@
+题目含义：
+给定一个数组，求具有先后顺序的两个数low与high的差最大的两个值
+思路：
+遍历数组中的元素，首先将第一项设置为最小值，一次遍历后面的元素，如果比min小则替换min，否则与min相减，得出的差与max比较
+代码：
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int size = prices.size();
+        if(size == 0 || size == 1) return 0;
+        int max = 0,min = prices[0];
+        for(int i = 1;i<size;i++){
+            if(prices[i]<=min){
+                min = prices[i];
+                continue;
+            } 
+            max = prices[i]-min>max?prices[i]-min:max;
+        }
+        return max;
+        
+    }
+};
+最优代码：
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int buy_point = INT_MAX;
+        int max_profit = 0;
+        for (int price : prices) {
+            if (price < buy_point) {
+                buy_point = price;
+                continue;
+            }
+            max_profit = max(max_profit, price - buy_point);
+        }
+        return max_profit;
+    }
+};
