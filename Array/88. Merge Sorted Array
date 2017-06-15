@@ -1,0 +1,25 @@
+题目含义：
+将两个已排序序列合并为一个排好序的序列，m,n标示两个序列中已初始化的值的个数，超出m,n范围可能有0，如{1,0} m = 1，第一个序列有可以容纳下两个序列的空间。
+
+代码：
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        if(m == 0) nums1=nums2;
+        if(m!= 0 && n > 0){
+        for(int i = 0;i<n;i++)
+            nums1[m++]=nums2[i];
+        sort(nums1.begin(),nums1.end());
+        }        
+    }
+};
+最优代码：
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+     int i = m - 1, j = n - 1, tar = m + n - 1;
+        while (j >= 0) {
+            nums1[tar--] = i >= 0 && nums1[i] > nums2[j] ? nums1[i--] : nums2[j--];
+        }
+    }
+};
