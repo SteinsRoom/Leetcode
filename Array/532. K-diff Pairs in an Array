@@ -1,0 +1,78 @@
+题目含义：
+给定一个数组和k，求数组中两个数的值相差为k的序列对的个数，要求序列对不重复。
+思路：
+先对数组排序，遍历数组中的元素，对当前遍历的值设为cur,对cur之后的值遍历，如果与cur差为k，且cur的值是第一次出现则result++，cur设为当前值，如果差值
+大于k跳出循环，遍历下一个值。
+代码：
+class Solution {
+public:
+    int findPairs(vector<int>& nums, int k) {
+        sort(nums.begin(),nums.end());
+        int size = nums.size();
+        if(size<=1) return 0;
+        int result = 0,key = INT_MIN;
+        for(int i = 0;i<size;i++){
+            int cur = nums[i];
+            for(int j = i+1;j<size;j++){
+                if(nums[j]-cur == k && cur!=key){
+                    result++;
+                    key = cur;
+                    break;
+                }
+                if(nums[j]-cur > k) break;
+            }
+        }
+        return result;
+    }
+};
+
+最优：26ms
+class Solution {
+public:
+    int findPairs(vector<int>& nums, int k) {
+        int pairs = 0;
+        if(nums.empty()||k<0)
+            return pairs;
+        //for(auto& x:nums)
+        //   cout<<x<<endl;
+            
+        
+        sort(nums.begin(),nums.end());
+        int cache[2] = {nums.back()+1,nums.back()+1};
+        for(int i=0; i < nums.size(); i++){
+            for(int j = 1; ((i+j) < nums.size())&&(nums[i]!=cache[0]); j++){
+                if((nums[i+j]<(nums[i]+k)))
+                    continue;
+                else if((nums[i+j]==(nums[i]+k))&&(nums[i+j]!=cache[1])){
+                    pairs++;
+                    cache[1]=nums[i+j];
+                    //cout<<nums[i]<<", "<<nums[i+j]<<endl;
+                }else
+                    break;
+            }
+            cache[0]=nums[i];
+        }
+        return pairs;
+    }
+};
+借助map：
+class Solution {
+public:
+    int findPairs(vector<int>& nums, int k) {
+        if (k <0) return 0;
+        unordered_map<int, int> mp;
+        int res = 0;
+        for (auto n : nums) {
+            mp[n]++;
+        }
+        for (auto i : mp) {
+            if (k == 0) {
+                if (i.second >=2) res++;
+            } else {
+                if (mp.count(i.first-k)) res++;
+                if (mp.count(i.first+k)) res++;
+            }
+        }
+        return k == 0? res: res/2;
+    }
+};
