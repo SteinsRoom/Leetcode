@@ -1,0 +1,58 @@
+题目含义：
+给定数字k，要求输出第k层帕斯卡三角形的值（k=0代表第一层）。
+思路：
+首先设置所有k+1个数值为1，迭代k次，每次从第i个数开始将第i个值替换为与前一个数值相加所得的和，最后可得所求的序列。
+代码：0ms
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        vector<int> result(rowIndex+1,1);
+        for(int i = 0;i<rowIndex;i++){
+            for(int j = i;j>0;j--){
+                result[j] += result[j-1];
+            }
+        }
+        return result;
+    }
+};
+
+
+典型做法：0ms
+class Solution {
+public:
+    vector<int> getRow(int rowIndex) {
+        std::vector<int> result;
+        if(rowIndex<0) {
+            return result;
+        } else if(rowIndex==0) {
+            result.push_back(1);
+            return result;
+        } else if(rowIndex==1) {
+            result.push_back(1);
+            result.push_back(1);
+            return result;
+        }
+        
+        int k=rowIndex;
+        
+        std:vector<std::vector<int>> pascal(k+1, std::vector<int>(k+1));
+        pascal[0][0]=1;
+        pascal[1][0]=1;
+        pascal[1][1]=1;
+
+        for(int i=2; i<k+1; i++) {
+            pascal[i][0]=1;
+            pascal[i][i]=1;
+            for(int j=1; j<i; j++) {
+               pascal[i][j]=pascal[i-1][j-1]+pascal[i-1][j];
+            }
+        }
+
+        for(int i=0; i<k+1; i++) {
+           result.push_back(pascal[k][i]);
+        }
+
+        return result;
+
+    }
+};
