@@ -1,0 +1,22 @@
+题目含义：
+给定一个包含0,1的序列，0代表空花盆，1代表已种上花。种花要求花与花之间必须间隔一个空花盆，给定一个数n，问能否种植n盆花。
+思路：
+在序列前后分别插入一个零，从第二个元素开始遍历，若该处值为0，判断该数前后是否都为0，是则将其置为1，count+1.最后比较count与n。
+代码：已最优
+class Solution {
+public:
+    bool canPlaceFlowers(vector<int>& flowerbed, int n) {
+        int size = flowerbed.size(),count = 0;
+        flowerbed.insert(flowerbed.begin(),0);
+        flowerbed.insert(flowerbed.end(),0);
+        for(int i = 1;i<=size;i++){
+            if(flowerbed[i] == 0){
+                if(flowerbed[i-1] == 0 && flowerbed[i+1]==0){
+                    flowerbed[i] = 1;
+                    count++;
+                }
+            }
+        }
+        return (count>=n)? true:false;
+    }
+};
