@@ -1,0 +1,26 @@
+题目含义：
+给定一个数组与一个值k，找出数组中的两个数使其相加之和等于k。假定数组中一定存在且恰好只有一组可能的解，返回的是两个数在数组中的位置。
+思路：
+i，j分别从头尾开始遍历，相加之和大于k则j--，小于i++直至找到。
+代码：
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        int size = numbers.size();
+        vector<int> result;
+        int i = 0,j=size-1;
+        while(i<j){
+            if(numbers[i]+numbers[j] == target){
+                result.push_back(i+1);
+                result.push_back(j+1);
+                break;
+            }else if(numbers[i]+numbers[j] > target){
+                j--;
+            }else if(numbers[i]+numbers[j] < target){
+                i++;
+            }
+                
+        }
+        return result;
+    }
+};
