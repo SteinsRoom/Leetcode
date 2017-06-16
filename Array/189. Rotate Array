@@ -1,0 +1,15 @@
+题目含义：
+给定序列和数值k，要求返回将后k个元素移动到系列前面后的新序列。至少三种方法。
+思路1：
+直接用insert将后面的元素逐个插入到前面，最后resize为正确大小。
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int size = nums.size();
+        for(int i = 0;i<k;i++){
+            nums.insert(nums.begin(),*(nums.end()-1-i));
+        }
+        nums.resize(size);
+    }
+};
+思路2：
