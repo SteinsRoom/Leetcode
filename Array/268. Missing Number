@@ -1,0 +1,32 @@
+题目含义：
+给定一个数组，大小为n，里面本应由0~n的数组成，现在少了一个，要求找到这个丢失的数。要求线性时间复杂度和常数空间复杂度。
+思路：
+利用等差数列求和公式，对0~n与数列中的数求和作差得到丢失的数。
+代码：
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int size = nums.size(),he = 0;
+        for(int i = 0;i<size;i++){
+            he+=nums[i];
+        }
+        int k = (size)*(size+1)/2;
+        return k - he;
+    }
+};
+
+
+更快：速度差不多？ 与运算
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int ret = nums.size(), i = 0;
+        
+        for (auto n : nums) {
+            ret ^= n;
+            ret ^= i;
+            i++;
+        }
+        return ret;
+    }
+};
