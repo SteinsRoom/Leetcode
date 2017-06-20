@@ -1,0 +1,41 @@
+题目含义：
+给定一个数组，判定里面是否含有重复的数字。
+思路：
+先排序，然后依次判断相邻的数是否相同。
+代码：
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int size = nums.size();
+        for(int i = 0;i<size-1;i++){
+            if(nums[i] == nums[i+1]){
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
+其他：
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        vector<int> sorted;
+        sort(nums.begin(),nums.end());
+        for(int i = 1; i < nums.size(); ++i){
+            if(nums[i] == nums[i-1]) return true;
+        }
+        return false;
+    }
+#if useXOR
+//wrong answer
+        int a = 0;
+        for(int i = 0; i < nums.size(); ++i){
+            a ^= nums[i];
+            if(a == 0) return true;
+        }
+        return false;
+    }
+#endif
+};
