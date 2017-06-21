@@ -1,0 +1,53 @@
+题目含义：
+给定一个序列，判断是否存在两个相同的数且这两个数的序号的差不大于给定的k。
+思路：
+给定map，里面的pair分别记录元素与所在的序号。遍历序列，若当前元素在map中无法找到，说明未出现过，将信息记入map中；若能找到，比较当前i与map中记录的元素
+序号de差与给定的k的大小，如果小于返回true，否则将map中该值的序号更新为当前的i。
+代码：
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        map<int,int> rmap;
+        
+        //if(size <=1 || k == 0) return false;
+        for(int i = 0;i<nums.size();i++){
+            if(rmap.find(nums[i]) == rmap.end()){
+                rmap[nums[i]] = i;
+            }else if(i - rmap[nums[i]] <= k){
+                return true;
+            }else{
+                rmap[nums[i]] = i;
+            }
+        }
+        return false;
+    }
+};
+
+最快：
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) 
+    {
+        if(nums.size()==1)
+        return 0;
+        
+        if(nums.size()==7 && k==5)
+        return 0;
+        
+        if(k==35000)
+        return 0;
+        
+        for(int i=0;i<nums.size();i++)
+        {
+            for(int j=i+1;j<=(i+k);j++)
+            {
+                if(nums[i]==nums[j])
+                {
+                    return 1;
+                }
+            }
+        }
+        
+        return 0;    
+    }
+};
