@@ -1,0 +1,36 @@
+题目含义：
+给定一组仅由（）{}【】组成的string，判断是否符合正确的顺序。
+思路：
+对于([{,直接入栈，对于）}】，判断栈是否为空以及栈顶元素是否不是对应的前半部分，是则返回false，不是则pop栈顶元素。最后看栈是否为空。
+代码：
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char> temp;
+        for(auto a:s){
+            switch(a){ 
+                case '(':
+                case '{':
+                case '[':
+                temp.push(a);
+                break;
+                case ')':
+                if(temp.empty()||temp.top() !='('){return false;}
+                else{
+                 temp.pop();break;   
+                }
+                case ']':
+                if(temp.empty()||temp.top() !='['){return false;}
+                else{
+                 temp.pop();break;   
+                }
+                case '}':
+                if(temp.empty()||temp.top() !='{'){return false;}
+                else{
+                 temp.pop();break;   
+                }
+                }
+        }
+        return temp.empty();
+    }
+};
