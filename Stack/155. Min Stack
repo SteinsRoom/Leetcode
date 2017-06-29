@@ -1,0 +1,46 @@
+题目含义：
+实现一个栈的函数，包含pop，push，top和getmin用来返回栈中最小的元素；
+思路：
+栈中会出现重复的数字，不能使用map，使用vector会超时（无论是对其中的元素排序还是遍历寻求最小值都会超时）
+借鉴网上的答案，使用两个栈s1,s2来进行操作。push每次将数字压入s1中，如果s2为空则也压入，或者当前元素不比s2栈顶的元素大则也压入(需注意这里需要添加相等的
+情况因为可能存在相同的最小值）。这样可以保证s2中的元素始终是从小到大排列，并且pop函数中删除s1中的元素同时，会判断该元素是否是s2中top位置的元素，如果是
+则一起删除，可以保证s2栈顶的元素是s1中的最小值并且删除后的下一元素也是剩余的s1中的最小值。
+代码：
+class MinStack {
+public:
+    stack<int> s1;
+    stack<int> s2;
+public:
+    /** initialize your data structure here. */
+    MinStack() {
+    }
+    
+    void push(int x) {
+        s1.push(x);
+        if(s2.empty() || x<=s2.top()){
+            s2.push(x);
+        }
+    }
+    
+    void pop() {
+        if(s2.top() == s1.top()) s2.pop();
+        s1.pop();
+    }
+    
+    int top() {
+        return s1.top();
+    }
+    
+    int getMin() {
+        return s2.top();
+    }
+};
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
