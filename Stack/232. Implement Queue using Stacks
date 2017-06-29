@@ -1,0 +1,101 @@
+题目含义：
+用栈来实现队列的基本函数，只能使用栈的基本函数。
+思路：
+使用两个栈sta1，sta2。
+push：直接sta1.push
+pop：将sta1中的size-1个元素存到sta2中，pop sta1中的最后一个元素再将原来的元素放回
+peek（获取队首元素）：与pop的思路相同，只是少了一步pop
+empty：直接判断sta1的empty
+代码：
+class MyQueue {
+public:
+    stack<int> sta1;
+    stack<int> sta2;
+public:
+    /** Initialize your data structure here. */
+    MyQueue() {
+    }
+    
+    /** Push element x to the back of queue. */
+    void push(int x) {
+        sta1.push(x);
+    }
+    
+    /** Removes the element from in front of queue and returns that element. */
+    int pop() {
+        int size = sta1.size();
+        for(int i =0;i<size-1;i++){
+            sta2.push(sta1.top());
+            sta1.pop();
+        }
+        int delete_elem =  sta1.top();
+        sta1.pop();
+        for(int i =0;i<size-1;i++){
+            sta1.push(sta2.top());
+            sta2.pop();
+        }
+        return delete_elem;
+    }
+    
+    /** Get the front element. */
+    int peek() {
+        int size = sta1.size();
+        for(int i =0;i<size-1;i++){
+            sta2.push(sta1.top());
+            sta1.pop();
+        }
+        int delete_elem =  sta1.top();
+        for(int i =0;i<size-1;i++){
+            sta1.push(sta2.top());
+            sta2.pop();
+        }
+        return delete_elem;
+    }
+    
+    /** Returns whether the queue is empty. */
+    bool empty() {
+        return sta1.empty();
+    }
+};
+
+
+使用一个栈：
+增加push的复杂度，每新增加一个元素，均使用递归将新元素放置在栈底，其余元素顺序不变。这样top与pop很方便。
+代码：
+class Queue {
+public:
+    stack<int> s;
+    
+    // Push element x to the back of queue.
+    void push(int x) {
+        pushHelper(x);
+    }
+    void pushHelper(int x){
+        if(s.size()==0){
+            s.push(x);
+            return;
+        }
+        int data;
+        data = s.top();
+        s.pop();
+        pushHelper(x);
+        s.push(data);
+        return;
+        
+    }
+
+    // Removes the element from in front of queue.
+    void pop(void) {
+        s.pop();
+    }
+
+    // Get the front element.
+    int peek(void) {
+        return s.top();
+    }
+
+    // Return whether the queue is empty.
+    bool empty(void) {
+        return (s.size()==0);
+    }
+};
