@@ -1,0 +1,45 @@
+题目含义：
+计算后缀表达式的值，数据记录在vector中，string格式
+思路：
+起初只是用vector进行操作，只要vector的size>1就循环，p为vector.begin()，遍历使p指向运算符号，将vector中p之前的两个数运算后并存储在原先第一个数的位置，
+并调用erase(p+1,p+3)删除运算完的两个数，最后仅剩一个数返回。但是最终超时了，参考网上答案利用栈将带运算的数字全部存进栈中进行计算，遍历vector中元素，
+遇到数字就将其压入栈中，遇到运算符就将栈中头两个元素弹出进行运算并重新压入栈中。
+代码：
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        if(tokens.size() == 1) return stoi(tokens[0]);
+        stack<int> st;
+        
+        for(auto p = tokens.begin();p!=tokens.end();p++){
+            if(*p == "+"){
+                int r2 = st.top();
+                st.pop();
+                int r1 = st.top();
+                st.pop();
+                st.push(r1+r2);
+            }else if(*p == "-"){
+                int r2 = st.top();
+                st.pop();
+                int r1 = st.top();
+                st.pop();
+                st.push(r1-r2);
+            }else if(*p == "*"){
+                int r2 = st.top();
+                st.pop();
+                int r1 = st.top();
+                st.pop();
+                st.push(r1*r2);
+            }else if(*p == "/"){
+                int r2 = st.top();
+                st.pop();
+                int r1 = st.top();
+                st.pop();
+                st.push(r1/r2);
+            }else{
+                st.push(stoi(*p));
+            }
+        }
+        return st.top();
+    }
+};
