@@ -1,0 +1,86 @@
+题目含义：
+给定如3【a】2【bc】的string，要求还原出aaabcbc的string
+思路：
+非递归法：
+针对可能的每一种符号分别处理：
+对于数字，计算出其实际的倍数，对于【，将上一次新产生的string压入栈中，res重新赋值为空，对于字母，加到res上，对于】，取出stk与nums中的数，将ans重复num次后与
+stk取出的值相加，并赋给res。
+代码：
+class Solution {
+public:
+    string decodeString(string s) {
+         stack<int> number;  //存数字  
+        stack<string> str;  //存字符串  
+        string ans;  
+        int i=0;  
+        while(i<s.length()){  
+            if(s[i]<='9' && s[i]>='0'){  
+                int count=0;  
+                while(s[i]<='9' && s[i]>='0'){  
+                    count = count*10+(s[i]-'0');  
+                    i++;  
+                }//while  
+                number.push(count);  
+            }else if(s[i]=='['){  
+                str.push(ans);  
+                ans="";  
+                i++;  
+            }else if(s[i]==']'){  
+                string tmp=str.top();  
+                str.pop();  
+                int cnt=number.top();  
+                number.pop();  
+                for(int j=0; j<cnt; j++){  
+                    tmp += ans;  
+                }//for  
+                ans=tmp;  
+                i++;  
+            }else{  
+                ans+=s[i];  
+                i++;  
+            }  
+        }//while  
+        return ans;  
+          
+    }
+};
+
+
+
+递归解法：
+class Solution {
+public:
+    string decodeString(const string& s, int& i) {
+        string res;
+     
+        while (i < s.length() && s[i] != ']') {
+            if (!isdigit(s[i]))
+                res += s[i++];
+            else {
+                int n = 0;
+                while (i < s.length() && isdigit(s[i]))
+                    n = n * 10 + s[i++] - '0';
+                    
+                i++; // '['
+                string t = decodeString(s, i);
+                i++; // ']'
+                
+                while (n-- > 0)
+                    res += t;
+            }
+        }
+        
+        return res;
+    }
+
+    string decodeString(string s) {
+        int i = 0;
+        return decodeString(s, i);
+    }
+};
+
+
+
+
+
+
