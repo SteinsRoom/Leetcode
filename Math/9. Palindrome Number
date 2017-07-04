@@ -1,0 +1,41 @@
+题目含义：
+给定int数，判断是否是回文数
+思路1：
+将其转换成字符串类型判断，利用stringstream
+代码：
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        stringstream ss;
+        ss<<x;
+        string s;
+        ss>>s;
+        int k = s.length()/2;
+        int i = 0;
+        while(k>0){
+            if(s[i]!= s[s.length()-i-1])
+                return false;
+            i++;
+            k--;
+        }
+        return true;
+    }
+};
+
+
+思路2：
+直接对数字进行处理，每次取其最后一个数（通过除10取余数）乘10加上之前的数构建新的数字，在完成数>剩下的数时停止。比较两个数或者新构造的数除10后是否相等
+需要注意排除小于零与是10的整数倍的情况
+代码：
+class Solution {
+public:
+    bool isPalindrome(int x) {
+        if(x<0||(x!=0 && x%10 == 0)) return false;
+        int num =0;
+        while(x>num){
+            num = num*10 +x%10;
+            x /=10;
+        }
+        return x == num || x == num/10;
+    }
+};
