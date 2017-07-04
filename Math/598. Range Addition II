@@ -1,0 +1,47 @@
+题目含义：
+给定一个m*n的数组M，给定一组条件，每个条件1由两个数组成i，j，需要将数组M中i*j范围内的数都加1.最终找出数组中最大数的个数。
+思路：
+分别找出条件中两个数的最小值相乘返回，如果为空返回原数组大小。
+代码：
+class Solution {
+public:
+    int maxCount(int m, int n, vector<vector<int>>& ops) {
+        vector<int> row,col;
+        int size = ops.size();
+        if(size == 0) return m*n;
+        for(int i = 0;i<size;i++){
+            row.push_back(ops[i][0]);
+            col.push_back(ops[i][1]);
+        }
+        int rsize = row.size();
+        int csize = col.size();
+        int maxrow=1000000,maxcol = 1000000;
+        for(int i = 0;i<rsize;i++){
+            if(row[i]<maxrow) maxrow = row[i];
+        }
+        for(int i = 0;i<csize;i++){
+            if(col[i]<maxcol) maxcol = col[i];
+        }
+        return maxcol*maxrow；       
+    }
+};
+简洁代码：
+class Solution {
+public:
+    int maxCount(int m, int n, vector<vector<int>>& ops) {
+        int min_m = m, min_n = n;
+        for (vector<int> op : ops) {
+            min_m = min(op[0], min_m);
+            min_n = min(op[1], min_n);
+        }
+        return min_m * min_n;
+    }
+};
+
+
+
+
+
+过程中遇到的问题：
+二维数组的表示与初始化（例如全部初始化为0）;
+用两个vector？ 指针数组？
