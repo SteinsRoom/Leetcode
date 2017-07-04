@@ -1,0 +1,15 @@
+题目含义：
+计算x的平方根
+思路：
+牛顿迭代法： r = x;r = (r+x/r)/2; r*r>x的情况下 最后返回r
+代码：
+class Solution {
+public:
+    int mySqrt(int x) {
+    long r = x;
+        while(r*r>x){
+            r = (r+x/r)/2;
+        }
+        return r;
+    }
+};
