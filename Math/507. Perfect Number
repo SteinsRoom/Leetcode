@@ -1,0 +1,20 @@
+题目含义：
+给定一个数，判断是否是完美数字，条件是其正好等于其所有因数之不含它本身和。
+思路：
+从2开始遍历，每求到一个能整除的数就将循环上限设置为num/k,不断循环。
+代码：
+class Solution {
+public:
+     bool checkPerfectNumber(int num) {
+        vector<int>res(1,1);
+        int upper=num;
+        for(int i=2;i<upper;i++) 
+            if(num%i==0)                                                                               
+                 res.push_back(i),
+                 res.push_back(num/i),
+                 upper=num/i;
+        int sum=0;
+        for(auto i:res) sum+=i;
+        return sum==num && num!=1;
+    }
+};
