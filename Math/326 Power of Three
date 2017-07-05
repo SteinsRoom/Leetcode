@@ -1,0 +1,24 @@
+题目含义：
+给定一个数，判断该数是否是3的指数次幂
+思路1：
+直接调用fmod 也是取余的操作
+代码：
+bool isPowerOfThree(int n) {
+     return fmod(log10(n)/log10(3), 1)==0;
+    }
+
+思路2：
+将INT_MAX除以三得到的整数再做3的幂次，然后除以n看余数是否为0；
+代码：
+class Solution {
+public:
+    bool isPowerOfThree(int n) 
+    {   
+        if (n <=0 ) return false;
+        const int maxint = 0x7fffffff;
+        int k = log(maxint) / log(3);
+        int big3 = pow(3,k);
+        return (big3 % n == 0);
+        
+    }
+};
