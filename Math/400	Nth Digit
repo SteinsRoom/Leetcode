@@ -1,0 +1,23 @@
+题目含义：
+对于序列123456789101112，给定n要求返回序列中第n个数字
+思路：
+分为三步，首先确定第n个数是对应几位数，然后确定是那个数字的第几位数，最后返回。
+代码：
+class Solution {
+public:
+    int findNthDigit(int n) {
+        if(n<10) return n;
+        long base = 9;
+        int digit = 1;
+        while(n - base*digit>0){
+            n-=base*digit;
+              base*=10;
+            digit++;
+        }
+        int k = digit-1;
+        //int num = n - (k*pow(10,k) - (pow(10,k)-1)/9);
+        int index = n%digit==0 ? digit-1:n%digit-1 ; //注意减一
+        int key = pow(10,digit-1)+(index == digit-1?n/digit-1:n/digit);确定是位于哪个数中
+        return (to_string(key))[index] - '0';
+    }
+};
