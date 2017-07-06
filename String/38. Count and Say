@@ -1,0 +1,27 @@
+题目含义：
+给定数字n，要求给出第n个特殊序列。特殊序列的定义为：eg.1211(n=3) 对于连续的数字如111改写为31（3个1） 单独的数字如5改写为15（1个5），则1211改写为111221
+思路：
+采用递归：
+将上一次返回的结果作为tmp（当前要处理的原始序列）。key记录当前字母，count记录出现次数。遍历序列，遇到不同的字母时将其加入res中，最后返回。
+代码：
+class Solution {
+public:
+    string countAndSay(int n) {
+        if(n==1) return "1";
+        string res,tmp = countAndSay(n-1);
+        char key = tmp[0];
+        int count = 1;
+        for(int i = 1;i<tmp.size();i++){
+            if(tmp[i] == key){
+                count++;
+            }else{
+                res+=(to_string(count)+key);
+                key = tmp[i];
+                count = 1;
+            }
+        }
+        res+=(to_string(count)+key);
+        return res;
+        
+    }
+};
