@@ -1,0 +1,43 @@
+题目含义：
+给定一个string s与一个原始string magazine，判断s是否可由magazine中的元素组成（每个元素只能使用一次）
+
+可能的变种：
+I remember that there are two variations of this question, perhaps they will come in the next few days :)
+
+If you can only pick letters from the magazine in order.
+If the magazine is double sided.
+思路：
+使用unordered——map，首先录入magazine'的每个字母的出现频次，然后遍历s，依次减去对应的s中出现的次数，如果小于零则返回false，否则返回true。
+代码：
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        unordered_map<char,int> mag_map(26);
+        for(int i = 0;i<magazine.length();i++){
+            ++mag_map[magazine[i]];
+        }
+        for(int i = 0;i<ransomNote.length();i++){
+            --mag_map[ransomNote[i]];
+            if(mag_map[ransomNote[i]]<0) return false;
+        }
+        return true;
+    }
+};
+
+
+使用vector代替：
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        vector<int> vec(26,0);
+        for(int i = 0;i<magazine.length();i++){
+            ++vec[magazine[i]-'a'];
+        }
+        for(int i = 0;i<ransomNote.length();i++){
+            --vec[ransomNote[i]-'a'];
+            if(vec[ransomNote[i]-'a']<0) return false;
+        }
+        return true;
+    }
+};
+
