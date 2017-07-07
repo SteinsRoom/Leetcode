@@ -1,0 +1,44 @@
+题目含义：
+调换string s 中元音字母的顺序
+思路：
+写一个韩数判断是否是元音字母，分别从两端开始查找，找到以后两者交换
+代码：
+class Solution {
+public:
+    string reverseVowels(string s) {
+        int left = 0,right = s.length()-1;
+        while(left<right){
+            if(IsVowel(s[left]) && IsVowel(s[right])){
+                swap(s[left++],s[right--]);
+            }else if(IsVowel(s[left])){
+                --right;
+            }else{
+                ++left;
+            }
+        }
+        return s;
+    }
+    bool IsVowel(char s){
+        return s == 'a'||s == 'A'||s == 'e'||s == 'E'||s == 'i'||s == 'I'||s == 'O'||s == 'o'||s == 'u'||s == 'U';
+    }
+};
+
+思路2：
+使用内建的find_first_of 与find_last_of   注意查找的字符串需要是string
+代码：
+class Solution {
+public:
+    string reverseVowels(string s) {
+        int left = 0,right = s.length()-1;
+        while(left<right){
+            left = s.find_first_of("aeiouAEIOU",left);
+            right = s.find_last_of("aeiouAEIOU",right);
+            if(left<right) swap(s[left++],s[right--]);
+        }
+        return s;
+    }
+};
+
+
+
+
