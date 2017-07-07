@@ -1,0 +1,39 @@
+题目含义：
+给定一个由大小写字母与空格组成的字符串，要求给出最后一个连续单词的长度。
+思路：
+利用find_last_of查找最后一个字母与最后一个空格，然后相减
+代码：
+class Solution {
+public:
+    int lengthOfLastWord(string s) {
+        int right = s.length()-1;
+        string key = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        int l1 = 0,l2 = 0;
+        if(s.find_last_of(key,right)!=string::npos){
+            l1 = s.find_last_of(key,right);
+        }else{
+            return 0;
+        }
+        if(s.find_last_of(key,right)!=string::npos && s.find_last_of(" ",l1)!= string::npos){
+           l2 = s.find_last_of(" ",l1); 
+        }else{
+            return l1+1;
+        }
+        return l1-l2;
+    }
+};
+
+思路2：
+class Solution {
+public:
+    int lengthOfLastWord(string s) {
+     int count=0;
+	 for(int s_len=0; s[s_len]!='\0';s_len++){       
+      if(s[s_len]==' ') continue; 
+      if(s[s_len]!=' ' && s[s_len-1]==' ')
+        count=0;             
+      count++;
+     }
+     return count;
+   }
+};
