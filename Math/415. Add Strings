@@ -1,0 +1,25 @@
+题目含义：
+给定两个仅含0-9的string,没有开头是零的情况，要求返回两个string代表的数字相加的结果，要求不能使用内置的bigInteger或者直接转换成int相加，两个string的
+长度均不大于5100
+思路：
+size1,size2分别从两个string的最后一位开始遍历，while循环的判断条件是size1>=0||size2>=0||flag>0  设置flag>0是为了数字相加完后仍有进位的情况。
+用sum在其size不为零的情况下依次加上其所代表的数字，并且最后和flag相加决定放入res的字符与下一个flag。最后返回res
+代码：
+class Solution {
+public:
+    string addStrings(string num1, string num2) {
+        if(num1.size() == 0 || num2.size() == 0) return (num1.size() == 0)?num2:num1;
+        int size1 = num1.length()-1;
+        int size2 = num2.length()-1;
+        string res;
+        int flag = 0;
+        while(size1>=0 || size2>=0||flag>0){
+            int sum = 0;
+            if(size1>=0) {sum+=num1[size1]-'0';size1--;};
+            if(size2>=0) {sum+=num2[size2]-'0';size2--;};
+            res = to_string((sum+flag)%10)+res;
+            flag = (sum+flag)/10;
+        }
+        return res;
+    }
+};
