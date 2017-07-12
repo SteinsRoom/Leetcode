@@ -1,0 +1,27 @@
+题目含义：
+给定一个数字，不断计算该数的每个数字的平方和，如果最终等于1则为所要的数，如果陷入循环则不是
+思路：
+利用链表中的快慢指针思想判断是否陷入循环
+代码：
+class Solution {
+public:
+    bool isHappy(int n) {
+        int slow = n,fast = n;
+        do{
+           slow = calnum(slow);
+           fast = calnum(fast);
+           fast = calnum(fast);
+        }while(slow!=fast);
+        if(slow == 1) return true;
+        return false;
+    };
+    int calnum(int n){
+        int sum = 0;
+        while(n){
+            int i = n%10;
+            sum+=i*i;
+            n/=10;
+        }
+        return sum;
+    }
+};
