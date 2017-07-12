@@ -1,0 +1,15 @@
+题目含义：
+给定一组ABCD...Z组成的字符串，按照26进位制将其翻译为相应的十进制整数。
+思路：
+从结尾开始，第i位的权重是pow(26,i-1),将结果累加。
+代码：
+class Solution {
+public:
+    int titleToNumber(string s) {
+        int sum = 0，p= 0,size = s.length()-1;
+        while(size>=0){
+            sum+=(s[size--]-'A'+1)*pow(26,p++);      
+        }
+        return sum;
+    }
+};
