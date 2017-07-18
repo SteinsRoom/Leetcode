@@ -1,0 +1,39 @@
+题目含义：
+找出一个序列中是否存在i<j<k,ai<ak<aj
+思路：
+可以暴力但是非常慢，看答案后有一新思路：从末尾处开始扫描，先找到第三个数n3（初始值为无穷小），然后判断接下来的数是否比n3大，小于则pass，大于则将栈中
+所有小于当前值的数全部pop，并令n3等于最后一个被pop的值，并将当前值push入栈中。
+代码：
+class Solution {
+public:
+    bool find132pattern(vector<int>& nums) {
+        int third = INT_MIN;
+        stack<int> s;
+        for (int i = nums.size() - 1; i >= 0; --i) {
+            if (nums[i] < third) return true;
+            else while (!s.empty() && nums[i] > s.top()) {
+                third = s.top(); s.pop();
+            }
+            s.push(nums[i]);
+        }
+        return false;
+    }
+};
+
+
+更简洁：
+class Solution {
+public:
+    bool find132pattern(vector<int>& nums) {
+        int third = INT_MIN;
+        stack<int> s;
+        for (int i = nums.size() - 1; i >= 0; --i) {
+            if (nums[i] < third) return true;
+            else while (!s.empty() && nums[i] > s.top()) {
+                third = s.top(); s.pop();
+            }
+            s.push(nums[i]);
+        }
+        return false;
+    }
+};
