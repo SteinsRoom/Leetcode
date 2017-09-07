@@ -1,0 +1,32 @@
+题目含义：
+给定一个含有n个数的数组，要求找出其中连续k个数，使得它们的和最大。
+思路1：
+暴力解，会超时
+代码如下：
+class Solution {
+private:
+    double decidemax(double a,double b){
+        return a>b?a:b;
+    }
+public:
+    double findMaxAverage(vector<int>& nums, int k) {
+        double max = -10001;
+        int size = nums.size();
+        if(k == size){
+            max = 0;
+            for(int i = 0;i<size;i++){
+                max +=nums[i];    
+            }
+            return max/k;
+        }
+        for(int i = 0;i<=size-k;i++){
+            double res = 0;
+            for(int j = 0;j<k;j++){
+                res+=nums[i+j];
+            }
+            max = decidemax(res/k,max);
+        }
+        return max;
+    }
+};
+思路2：
