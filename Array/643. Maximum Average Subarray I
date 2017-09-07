@@ -29,4 +29,18 @@ public:
         return max;
     }
 };
-思路2：也叫滑动窗口问题
+思路2：计算完第一组的值后改为计算后面的组与前面的组中对应元素的差值
+class Solution {
+public:
+    double findMaxAverage(vector<int>& nums, int k) {
+        double cur = 0.0;  
+        for (int i = 0; i < k; ++i)  
+            cur += nums[i];  
+        double max = cur;  
+        for (int i = k; i < nums.size(); ++i) {  
+            cur = cur + nums[i] - nums[i - k];  
+            max = max>cur?max:cur;  
+        }  
+        return max / k;  
+    }
+};
