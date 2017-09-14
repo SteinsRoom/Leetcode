@@ -1,0 +1,49 @@
+题目含义：
+给定两个数组，内都含有可能重复的数字，要求给出两个数组的交集，不要求顺序。
+思路1：
+使用unordered_map，先将一个数组中的数录入map中，每个数字对应bool值，然后遍历另一个数组，如果能查到就将其放入结果中，并将bool值设为false避免该数组中的
+重复数字再次放入结果中。
+代码：
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int,bool> m;
+        vector<int> result;
+        for(auto s : nums1){
+            m[s] = true;
+        }
+        for(auto i:nums2){
+            if(m[i]){
+                result.push_back(i);
+                m[i] = false;
+            }
+        }
+        return result;
+    }
+};
+
+思路2：
+使用unordered_set,将一个数组中的数录入set中，然后遍历另一个数组，使用count查询数字出现次数，如果为1则放入结果中，并用erase删除该数避免该数组中的
+重复数字再次放入结果中。
+代码：
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int> s;
+        vector<int> result;
+        for(auto k : nums1){
+            s.insert(k);
+        }
+        for(auto i:nums2){
+            if(s.count(i)){
+                result.push_back(i);
+                s.erase(i);
+            }
+        }
+        return result;
+    }
+};
+
+
+
+
