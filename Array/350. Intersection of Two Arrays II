@@ -1,0 +1,22 @@
+题目含义：
+给定两个数组，要求返回两个数组的交集，其中重复的数字也要返回，返回的个数为其在两个数组中出现次数的最小值，返回结果的顺序没有要求。
+思路：
+与前面的很像，但是这里使用set会无法返回正确的次数，所以改用map，录入一个数组中的值时记录其出现的次数。
+代码：
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int,int> m;
+        vector<int> result;
+        for(auto k : nums1){
+            m[k]++;
+        }
+        for(auto k :nums2){
+            if(m[k]){
+                result.push_back(k);
+                m[k]--;
+            }
+        }
+        return result;
+    }
+};
