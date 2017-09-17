@@ -1,0 +1,77 @@
+题目含义：
+给定一组罗马数字，要求返回其对应的数字
+思路：
+关于罗马数字的书写规则见https://www.douban.com/note/335254352/，对于给定的罗马数字，只需比较该数字与其右侧数字的大小，如果小于右侧数字泽该数字
+应记为负值，否则记为正值。
+代码： 时间67ms
+class Solution {
+public:
+    int romanToInt(string s) {
+        unordered_map<char,int> mp;
+        mp.insert(pair<char,int>('I',1));
+        mp.insert(pair<char,int>('V',5));
+        mp.insert(pair<char,int>('X',10));
+        mp.insert(pair<char,int>('L',50));
+        mp.insert(pair<char,int>('C',100));
+        mp.insert(pair<char,int>('D',500));
+        mp.insert(pair<char,int>('M',1000));
+        int sum =0;
+        for(auto it = s.begin();it!=s.end();it++){
+            if(it-s.begin() != s.length()-1){
+                if(mp[*it]<mp[*(it+1)]){
+                    sum-=mp[*it];
+                }else{
+                    sum+=mp[*it];
+                }
+            }else{
+                sum+=mp[*it];    
+            }
+        }
+        return sum;
+    }
+};
+
+
+更短时间：29ms
+class Solution {
+public:
+int romanToInt(string s)
+{
+  int res = 0;
+
+  for (const char& c : s) {
+    switch (c) {
+      case 'M':
+        if (res % 1000 == 100) res += 800;
+        else res += 1000;
+        break;
+      case 'D':
+        if (res % 1000 != 0) res += 300;
+        else res += 500;
+        break;
+      case 'C':
+        if (res % 100 == 10) res += 80;
+        else res += 100;
+        break;
+      case 'L':
+        if (res % 100 != 0) res += 30;
+        else res += 50;
+        break;
+      case 'X':
+        if (res % 10 == 1) res += 8;
+        else res += 10;
+        break;
+      case 'V':
+        if (res % 10 != 0) res += 3;
+        else res += 5;
+        break;
+      case 'I':
+        res += 1;
+        break;
+    }
+  }
+
+  return res;
+}
+
+};
