@@ -1,0 +1,54 @@
+题目含义：
+给定两个数组，找出其中相同的字符串并返回两个字符串下标最小的字符串，如果存在多组下标最小且相同的字符串则将它们都返回，不计顺序。
+思路：
+将其中一组存入map，用另一组作为关键字查询，能查询到则比较下标之和。
+代码：96ms
+class Solution {
+public:
+    vector<string> findRestaurant(vector<string>& list1, vector<string>& list2) {
+        unordered_map<string,int> mp;
+        int min = INT_MAX;
+        vector<string> result;
+        for(int i = 0;i<list1.size();i++){
+            mp.insert(pair<string,int>(list1[i],i));
+        }
+        for(int i = 0;i<list2.size();i++){
+            if(mp.count(list2[i])){
+                if(i+mp[list2[i]] <min){
+                    min = i+mp[list2[i]];
+                    result.clear();
+                    vector<string>(result).swap(result);
+                    result.push_back(list2[i]);
+                }else if(i+mp[list2[i]] ==min){
+                    result.push_back(list2[i]);
+                }
+            }
+        }
+        return result;
+    }
+};
+最快：76ms 思路基本相同
+class Solution {
+public:
+    vector<string> findRestaurant(vector<string>& list1, vector<string>& list2) {
+      unordered_map<string, int> mp;
+      vector<string> res;
+      int min_sum_index = 2000000;
+      for (int i = 0; i < list1.size(); i++) {
+        mp[list1[i]] = i;
+      }
+      for (int i = 0; i < list2.size(); i++) {
+        if (mp.count(list2[i])) {
+          int j = mp[list2[i]];
+          if (i + j < min_sum_index) {
+            res.clear();
+            res.push_back(list2[i]);
+            min_sum_index = i + j;
+          } else if (i + j == min_sum_index) {
+            res.push_back(list2[i]);
+          }
+        }
+      }
+      return res;
+    }
+};
