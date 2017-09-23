@@ -1,0 +1,26 @@
+题目含义：给定一个string，要求给出其能组成回文串的最大长度。
+代码：
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        unordered_map<char,int> mp;
+        int result = 0;
+        bool odd = true;
+        for(int i = 0;i<26;i++){
+            mp.insert(pair<char,int>(char('a'+i),0));
+            mp.insert(pair<char,int>(char('A'+i),0));
+        }
+        for(auto r:s){
+            mp[r]++;
+        }
+        for(auto iter = mp.begin();iter!=mp.end();iter++){
+            if(iter->second %2 == 0){
+                result+=iter->second;
+            }else{
+                odd = false;  
+                result+=iter->second-1;
+            }
+        }
+        return odd == false?result+=1:result;
+    }
+};
