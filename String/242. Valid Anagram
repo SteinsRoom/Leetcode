@@ -1,0 +1,48 @@
+题目含义：
+给定两个string，判断这两个string是否是Anagram(由颠倒字母顺序而构成的字)
+思路：
+统计字母出现次数
+代码：
+用map：19ms
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        unordered_map<char,int> mp;
+        for(auto r:s){
+            mp[r]++;
+        }
+        for(auto i:t){
+            if(!mp.count(i)){
+                return false;
+            }else{
+                mp[i]--;
+            }
+        }
+        for(auto it = mp.begin();it!=mp.end();it++){
+            if(it->second!=0){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+换成char数组：已最快 9ms
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        char ch[26] = {0};
+        for(auto r:s){
+            ch[r-'a']++;
+        }
+        for(auto i:t){
+            ch[i-'a']--;
+        }
+        for(auto i:ch){
+            if(i!=0){
+                return false;
+            }
+        }
+        return true;
+    }
+};
