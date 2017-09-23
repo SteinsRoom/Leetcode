@@ -1,0 +1,35 @@
+题目含义：
+给定一组分数，要求给出每个分数所对应的名词，其中前三名名次由特殊的string代替
+思路：
+map存储分数与对应的位置并给分数排序，接着从第一名开始读取存储的位置写入名次。注意此处代码map在添加了greater后得到的指针不能够用+—运算符计算，并且没有
+设置大小的vector不能直接vector s[i]=XX 进行赋值。
+代码：13ms
+class Solution {
+public:
+    vector<string> findRelativeRanks(vector<int>& nums) {
+        map<int,int,std::greater<int>> mp;
+        int i = 0;
+        vector<string> result;
+        result.resize(nums.size());
+        for(auto s:nums){
+            mp.insert(pair<int,int>(s,i++));
+        }
+        auto it = mp.begin();
+        for(int i = 0;i<mp.size();i++){
+            if(i == 0){
+                result[it->second] = "Gold Medal";
+                it++;
+            }else if(i == 1){
+                result[it->second] = "Silver Medal";
+                it++;
+            }else if(i == 2){
+                result[it->second] = "Bronze Medal";
+                it++;
+            }else{
+                 result[it->second] = to_string(i+1);
+                it++;
+            }
+        }
+        return result;
+    }
+};
