@@ -1,0 +1,40 @@
+题目含义:
+给定一个数字，要求将其转化成相应的7进制数
+思路：
+不断除7，将结果加入最终的string
+代码：6ms
+class Solution {
+public:
+    string convertToBase7(int num) {
+        if(num == 0) return to_string(0);
+        int r = num;
+        string s;
+        while(r!=0){
+            s = to_string(abs(r%7))+s;
+            r /=7;
+        }
+        if(num<0) s = "-"+s;
+        return s;
+    }
+};
+代码：
+最快：3ms  先化为数字在转换，节省时间
+class Solution {
+public:
+    string convertToBase7(int num) {
+        int remainder=0;
+        int digits=1;
+        int result=0;
+        if(num == 0){
+            return "0";
+        }
+        while(num != 0){
+            remainder = num % 7;
+            num /= 7;
+            remainder *= digits;
+            result += remainder;
+            digits *= 10;
+        }
+        return to_string(result);
+    }
+};
