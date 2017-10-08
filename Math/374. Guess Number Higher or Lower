@@ -1,0 +1,30 @@
+题目含义：
+给定一个数n，代表1到n的一个连续数组，从中选定一个数，要求找出选定的这个数。提供guess函数来判断当前数大于或小于所选定的数字。这里的guess给出的结果是判断
+要求的数与自己给的数的大小关系，注意题意。
+思路：
+简单的二分查找，设定mid，根据guess返回的结果修改上下限。需要注意这里对上下界的修改。mid = (low+n)/2;mid比选定的数大时，修改low。
+
+代码：
+// Forward declaration of guess API.
+// @param num, your guess
+// @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
+int guess(int num);
+
+class Solution {
+public:
+    int guessNumber(int n) {
+        int low = 1,high =n;
+        while(low<=high){
+            int mid = (high+low)/2;
+            int key = guess(mid);
+            if(key == 0){
+                return mid;
+            }else if(key == -1){
+                high = mid-1;
+            }else{
+                low = mid+1;
+            }
+        }
+        return -1;
+    }
+};
