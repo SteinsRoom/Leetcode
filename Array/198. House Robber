@@ -1,0 +1,22 @@
+题目含义：
+有一排房子，每个房子里均有一定数量的财物，现在你是一名小偷，想要偷到最大数量的财物，请给出访问房屋的顺序。要求是不能连续访问两个相邻的房屋。
+思路：
+是典型的动态规划题，找出递推公式是maxV[i] = max(maxV[i-2]+num[i], maxV[i-1])。具体的动态规划还需要在学习补充。
+代码：
+class Solution {
+public:
+    int rob(vector<int>& nums) {
+        int size = nums.size();
+        if(size == 0) return 0;
+        if(size == 1) return nums[0];
+        if(size == 2) return nums[0]>nums[1]?nums[0]:nums[1];
+        vector<int> res;
+        res.resize(size);
+        res[0] = nums[0]; 
+        res[1] =nums[0]>nums[1]?nums[0]:nums[1];
+        for(int i = 2;i<size;i++){
+            res[i] = max(res[i-1],res[i-2]+nums[i]);
+        }
+        return res[size-1]>res[size-2]?res[size-1]:res[size-2];
+    }
+};
