@@ -1,0 +1,27 @@
+题目含义：
+给定一个数，判断该数是否是4的幂次。
+思路：
+可以求对数，然后取上限计算幂次判断与原数是否相等。也可以利用位运算，先计算num&（num-1）来判断是否只含有一个1.由于4的幂次在二进制下仅有一位是1，且1只出现在奇数位，所以可以与0x55555555（二进制为
+1010101010101010101010101010101）与运算，判断是否是4的幂次。
+
+代码：
+思路1：
+class Solution {
+public:
+    bool isPowerOfFour(int num) {
+        if(num<=0) return false ;
+        double s = log(num)/log(4);
+        int key = ceil(s);
+        return (pow(4,key) == num)? true:false;
+    }
+};
+思路2：
+class Solution {
+public:
+    bool isPowerOfFour(int num) {
+        
+        if((num&(num-1))!= 0) return false;
+        if(num & 0x55555555) return true;
+        return false;
+    }
+};
