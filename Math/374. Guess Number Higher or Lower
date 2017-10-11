@@ -9,7 +9,26 @@
 // @param num, your guess
 // @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
 int guess(int num);
+class Solution {
+public:
+    int guessNumber(int n) {
+        //simple binary search : low = 1; high = n
+        int low = 1;
+        while(low <= n){
+            int mid = low + (n-low) / 2; 注意此处没有直接相加而是采用作差再相加，避免两个数都较大时相加超出int范围而出错。
+            int res = guess(mid);
+            if(res == 0)
+                return mid;
+            else if(res == -1)
+                n = mid - 1;
+            else
+                low = mid + 1;
+        }
+        return -1;
+    }
+};
 
+以下均为错误！！！！！！！！！
 class Solution {
 public:
     int guessNumber(int n) {
@@ -23,6 +42,30 @@ public:
                 high = mid-1;
             }else{
                 low = mid+1;
+            }
+        }
+        return -1;
+    }
+};
+
+// Forward declaration of guess API.
+// @param num, your guess
+// @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
+int guess(int num);
+
+class Solution {
+public:
+    int guessNumber(int n) {
+        int low = 1,high = n;
+        if(n == 1) return n;
+        while(low<=high){
+            int middle = (low+high)/2;
+            if(guess(middle) == 0){
+                return middle;
+            }else if(guess(middle) == -1){
+                high = middle-1;
+            }else{
+                low = middle+1;
             }
         }
         return -1;
