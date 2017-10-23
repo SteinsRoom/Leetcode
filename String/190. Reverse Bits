@@ -1,0 +1,25 @@
+题目含义：给定一个无符号 int整数，要求给出其二进制倒序排列后所得的十进制整数值。
+思路：
+6ms：按照10进制转化为2进制的思路，将其转化为2进制存入数组中，在反序得到结果。
+代码：
+class Solution {
+public:
+    uint32_t reverseBits(uint32_t n) {
+        uint32_t res[32] = {0};
+        int i = 0;
+        while(n>0){
+            res[i] = n%2;
+            n/=2;
+            ++i;
+        }
+        uint32_t result = 0;
+        int key = 0;
+        for(int j = i-1;j>=0;--j){
+            result+= res[j]*pow(2,32-i);
+            --i;           
+        }
+        return result;
+    }
+};
+
+思路2：使用位运算
