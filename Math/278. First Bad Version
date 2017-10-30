@@ -1,0 +1,30 @@
+题目描述：
+给定一个数n，代表有一组从1至n的整数，可以使用提供的API函数bool isBadVersion(version)判断数字是否为bad。在这组数中从某一数字开始之后均为bad，要求
+尽可能少的利用API函数找出第一个bad数
+思路：ad
+使用二分查找类似的思路，根据middle与middle+1是否为bad调整查找的上下限。middle->bad&&middle+1->bad high = middle;middle->good&&middle+1->good,
+low = middle;否则返回middle+1.最后注意n为1时的处理。
+代码：0ms
+// Forward declaration of isBadVersion API.
+bool isBadVersion(int version);
+
+class Solution {
+public:
+    int firstBadVersion(int n) {
+        int low = 1,high = n;
+        while(high>low){
+            int middle = low+(high-low)/2;
+            if(isBadVersion(middle) && isBadVersion(middle+1) ){
+                high = middle;
+            }else if((!isBadVersion(middle)) && (!isBadVersion(middle+1))){
+                low = middle;
+            }else{
+                return middle+1;
+            }
+        }
+        if(low ==high){
+            if(isBadVersion(low)) return low;
+        }
+        
+    }
+};
