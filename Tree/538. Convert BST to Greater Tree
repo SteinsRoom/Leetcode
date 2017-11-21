@@ -1,0 +1,110 @@
+题目：给定一个二叉搜索树，要求将每个节点的值加上所有其余比他值大的节点的值。
+思路：1 利用中序遍历得到序列，处理序列得到应加的值，再次中序遍历加回去。
+     2.利用反向中序遍历，从右下角开始遍历并加值。
+代码1：
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* convertBST(TreeNode* root) {
+        //sum = 0;
+        stack<TreeNode*> S;
+        InOrder(root,S);
+        addlist.push_back(0);
+        addlist = numlist;
+        for(int i = numlist.size()-2;i>=0;--i){
+                numlist[i]+=numlist[i+1];
+            
+        }
+        for(int i = 0;i<addlist.size();++i){
+            numlist[i] -= addlist[i];
+        }
+        addInOrder(root,S);
+        //PreOrder(root);
+        //AddNum(root);
+        return root;
+    }
+    /*int GetsmallerNum(TreeNode* root){
+        if(root == NULL)
+            return 0;
+        return (root->val) + GetsmallerNum(root->left) + GetsmallerNum(root->right);
+        
+    }
+    void PreOrder(TreeNode* root){
+        if(root){
+            sum+=root->val;
+            PreOrder(root->left);
+            PreOrder(root->right);
+        }
+    }
+    void AddNum(TreeNode* root){
+        if(root){
+            root->val += (sum - GetsmallerNum(root->left)-root->val);
+            AddNum(root->left);
+            AddNum(root->right);
+        }
+    }*/
+    void InOrder(TreeNode* root,stack<TreeNode*>& S){
+        while(true){
+            if(root){
+                S.push(root);
+                root = root->left;
+            }else if(!S.empty()){
+                numlist.push_back(S.top()->val);
+                root = S.top()->right;
+                S.pop();
+            }else{
+                break;
+            }           
+
+        }
+        
+    }
+    void addInOrder(TreeNode* root,stack<TreeNode*>& S){
+        int i = 0;
+        while(true){
+            if(root){
+                S.push(root);
+                root = root->left;
+            }else if(!S.empty()){
+                S.top()->val += numlist[i++];
+                root = S.top()->right;
+                S.pop();
+            }else{
+                break;
+            }           
+
+        }
+        
+    }
+private:
+    vector<int> numlist;
+    vector<int> addlist;
+    //int sum;
+};
+
+
+思路2：
+class Solution {
+private:
+    int cur_sum = 0;
+public:
+    void travel(TreeNode* root){
+        if (!root) return;
+        if (root->right) travel(root->right);
+        
+        root->val = (cur_sum += root->val);
+        if (root->left) travel(root->left);
+    }
+    TreeNode* convertBST(TreeNode* root) {
+        travel(root);
+        return root;
+    }
+};
