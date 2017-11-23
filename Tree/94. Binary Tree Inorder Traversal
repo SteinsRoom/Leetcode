@@ -1,0 +1,46 @@
+代码：
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        /*stack<TreeNode*> S;
+        while(true){
+            if(root){
+                S.push(root);
+                root = root->left;
+            }else if(!S.empty()){
+                result.push_back(S.top()->val);
+                root = S.top()->right;
+                S.pop();
+            }else{break;}
+        }*/
+        /*if(root == NULL) return result;
+        if(root->left) inorderTraversal(root->left);
+        result.push_back(root->val);
+        if(root->right) inorderTraversal(root->right);*/
+        bool trackback = false;
+        
+        return result;
+    }
+    TreeNode* succ(TreeNode* node){
+        if(node->right){
+            node = node->right;
+            while(node->left){
+                node = node->left;
+            }
+            return node;
+        }else{
+            while()
+        }
+    }
+private:
+    vector<int> result;
+};
