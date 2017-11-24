@@ -37,3 +37,65 @@ private:
     vector<int> result;
         
 };
+
+
+后序：
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        post(root);
+        return res;
+        /*vector<int> res;
+        if(root == NULL) return res;
+        stack<TreeNode*> S;
+        TreeNode* cur = root;
+        TreeNode* lastnode = NULL;
+        while(cur != NULL || !S.empty()){
+            if(cur){
+                S.push(cur);
+                cur = cur->left;
+            }else{
+                cur = S.top();
+                if((cur->right == NULL)|| (cur->right == lastnode)){
+                    res.push_back(cur->val);
+                    lastnode = cur;
+                    S.pop();
+                    cur = NULL;
+                }else{
+                    cur = cur->right;
+                } 
+            }
+            /*
+            while(cur){
+                S.push(cur);
+                cur = cur->left;
+            }
+            cur = S.top();
+            if((cur->right == NULL)|| (cur->right == lastnode)){
+                    res.push_back(cur->val);
+                    lastnode = cur;
+                    S.pop();
+                    cur = NULL;
+            }else{
+                    cur = cur->right;
+            } */
+}
+    void post(TreeNode* root){
+        if(root == NULL) return;
+        if(root->left)post(root->left);
+        if(root->right)post(root->right);
+        res.push_back(root->val); 
+    }
+private:
+vector<int> res;
+
+};
