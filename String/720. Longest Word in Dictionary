@@ -1,0 +1,45 @@
+题目含义：
+给定一组string，要求找出长度最长或者同样长度下更小（字典序直接比较）的特定字符串，该字符串的前n个部分均在这组字符串中。
+思路：
+1.原始思路：较慢
+  给string排序，每次遍历一个string并存入set中，利用substr（pos,length）来获取子串，判断是否均在set中，如果是则比较与当前找到的目标串的长度并更新。
+2.优化：无需排序所以使用无需set；对string排序后其自然满足按字典序升序排列，比较时无须再进行比较直接比较长度即可；无需每个字符串都判断其每个子串均
+在set中，而是只在长度为1或者n-1长度的子串在set中时放入set中并进行比较。
+代码：
+class Solution {
+public:
+    string longestWord(vector<string>& words) {
+        /*sort(words.begin(),words.end());
+        unordered_set<string> s;
+        string res;
+        int maxlen = INT_MIN;
+        for(int i = 0;i<words.size();++i){
+            int size = words[i].length();
+            int str_index = 1;
+            for(;str_index<size;++str_index){
+                if(s.find(words[i].substr(0,str_index))==s.end())
+                    break;
+            }
+            if(str_index == size){
+                if(size>maxlen || ((size ==maxlen) && (words[i]<res))){
+                    res = words[i];
+                    maxlen = size;
+                }
+            }
+            s.insert(words[i]);
+        }
+        return res;*/
+        sort(words.begin(),words.end());
+        unordered_set<string> s;
+        string res;
+        int maxlen = INT_MIN;
+        for(int i = 0;i<words.size();++i){
+            int size = words[i].length();
+            if(size == 1 || s.count(words[i].substr(0,size-1))){
+                res = size>res.size()?words[i]:res;
+                s.insert(words[i]);
+            }
+        }
+        return res;
+    }
+};
