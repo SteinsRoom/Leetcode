@@ -1,0 +1,62 @@
+代码优化：
+层序遍历原先做法：每一层结束插入NULL作为标记，改进做法无需插入，每次循环开始就统计queue中含有的节点数目，利用for循环界定范围。
+代码：原始做法19ms，改进后16ms
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<double> averageOfLevels(TreeNode* root) {
+        /*vector<double> res;
+        if(!root) return res;
+        queue<TreeNode*> que;
+        TreeNode* cur;
+        que.push(root);
+        que.push(NULL);
+        double cursum = 0,NumInRow = 0;
+        while(!que.empty()){
+            if(que.front()!=NULL){
+                cur = que.front();
+                que.pop();
+                cursum+=cur->val;
+                ++NumInRow;
+                if(cur->left) que.push(cur->left);
+                if(cur->right) que.push(cur->right);
+            }else{
+                que.pop();
+                res.push_back(cursum/NumInRow);
+                cursum = 0,NumInRow = 0;
+                if(que.empty()) break;
+                que.push(NULL);
+            }
+        }
+        return res;*/
+        vector<double> res;
+        if(!root) return res;
+        queue<TreeNode*> que;
+        TreeNode* cur;
+        que.push(root);
+        double cursum = 0;//,NumInRow = 0;
+        while(!que.empty()){
+            double size = que.size();
+            for(double i = 0;i<size;++i){
+                cur = que.front();
+                que.pop();
+                cursum+=cur->val;
+                if(cur->left) que.push(cur->left);
+                if(cur->right) que.push(cur->right);
+            }
+                res.push_back(cursum/size);
+                cursum = 0;
+                if(que.empty()) break;
+        }
+        return res;
+        
+    }
+};
