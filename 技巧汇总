@@ -1,1 +1,2 @@
 翻转vector可以使用reverse（vec.begin(),vec.end()）
+后序遍历可以不需插入额外NULL节点来分层，可以直接统计每层queue节点数目，用for循环来分层
