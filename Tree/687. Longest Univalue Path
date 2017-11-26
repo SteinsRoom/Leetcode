@@ -1,0 +1,33 @@
+代码：参考了https://www.cnblogs.com/grandyang/p/7636259.html
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int longestUnivaluePath(TreeNode* root) {
+        res = 0;
+        if(!root) return res;
+        int k  = getres(root);
+        return res;
+    }
+    int getres(TreeNode* root) {
+        if(!root) return 0;
+        int left = getres(root->left);
+        int right = getres(root->right);
+        left = (root->left && root->val == (root->left)->val) ?left+1:0;
+        right = (root->right && root->val == (root->right)->val) ?right+1:0;
+        res = max(res,left+right);
+        return left>right?left:right;
+    }
+private:
+    int res;
+};
+
+目前还是对于递归的使用不是特别熟练
