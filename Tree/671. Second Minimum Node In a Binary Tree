@@ -1,0 +1,45 @@
+题目含义：给定一个二叉树，其特点是该树为完全二叉树，每个节点的值是其两个子节点中较小的值，要求给出eer二叉树中第二小的值，如果不存在则返回-1
+
+思路1：遍历二叉树，利用set筛选和排序元素，输出第二个值。 时间3ms（最快0ms）
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int findSecondMinimumValue(TreeNode* root) {
+        set<int> s;
+        //inorder_recursion(root,s);
+        inorder_iteration(root,s);
+        if(s.size()<2 || root == NULL) return -1;
+        auto it = s.begin();
+        it++;
+        return *it;
+    }
+    void inorder_recursion(TreeNode* root,set<int>& ss){
+        if(root == NULL) return;
+        inorder_recursion(root->left,ss);
+        ss.insert(root->val);
+        inorder_recursion(root->right,ss);
+    }
+    void inorder_iteration(TreeNode* root,set<int>& ss){
+        stack<TreeNode*> sta;
+        while(root || !sta.empty()){
+            if(root){
+                sta.push(root);
+                root = root->left;
+            }else{
+                ss.insert(sta.top()->val);
+                root = sta.top()->right;
+                sta.pop();
+            }
+        }
+    }
+};
+
+思路2：
