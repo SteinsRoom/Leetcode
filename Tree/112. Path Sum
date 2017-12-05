@@ -32,5 +32,40 @@ public:
 
 
 另一写法：函数每次返回bool值，参数表中result拿出作为返回结果
-代码：
-
+代码： 速度没有上面的快，每次递归多做了一次或运算
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        bool res = false;
+        //helper(root,0,sum,res);
+        //return res;
+        return helper(root,0,sum);
+    }
+    void helper(TreeNode* root, int sum,int key,bool& result){
+        if(root == NULL) return;
+        if(root->left == NULL && root->right == NULL) 
+        {   sum+= root->val;
+            if(sum == key) result = true;
+            return; }
+        sum+=root->val;
+        if(root->left) helper(root->left,sum,key,result);
+        if(root->right)helper(root->right,sum,key,result);
+        return;
+    } 
+    
+    bool helper(TreeNode* root, int sum,int key){
+        if(root == NULL) return false;
+        sum+=root->val;
+        if(root->left == NULL && root->right == NULL && sum == key) return true;
+        return helper(root->left,sum,key) || helper(root->right,sum,key);
+    }
+};
