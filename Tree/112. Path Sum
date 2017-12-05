@@ -1,0 +1,31 @@
+题目含义：给定一颗二叉树和一个目标值，要求判断在所有根到叶子节点的路径中是否存在某条路径使得该条路径上的数字之和等于目标值。
+思路：使用递归，构造递归函数helper，函数参数表传入所需的值，本次传入root节点，当前路径上的和sum，目标值key，对应的结果res。
+代码：//已最快
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        bool res = false;
+        helper(root,0,sum,res); //sum作为key
+        return res;
+    }
+    void helper(TreeNode* root, int sum,int key,bool& result){
+        if(root == NULL) return;
+        if(root->left == NULL && root->right == NULL) //到达叶子结点判断路径上的和是否为key
+        {   sum+= root->val;
+            if(sum == key) result = true;
+            return; }
+        sum+=root->val; //直接在helper的参数表中加结果不正确
+        if(root->left) helper(root->left,sum,key,result);//继续遍历
+        if(root->right)helper(root->right,sum,key,result);
+        return;
+    } 
+};
