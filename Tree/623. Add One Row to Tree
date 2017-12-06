@@ -1,6 +1,15 @@
 思路1：使用层序遍历，存储要加入层数的节点，加入一列。注意最后一行的情况！！
 
 代码：
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
 class Solution {
 public:
     TreeNode* addOneRow(TreeNode* root, int v, int d) {
@@ -12,7 +21,7 @@ public:
         queue<TreeNode*> que,que2;
         que.push(root);
         while(!que.empty()){
-            if(--d == 0) return root;
+            --d;
             int size = que.size();
             if(d == 1){
                 for(int i = 0;i<size;++i ){
@@ -30,10 +39,8 @@ public:
                 if(que.front()->right) que.push(que.front()->right);
                 que.pop();
                 }
-            }
-            
+            }         
         }       
         return root;
     }
-    
 };
