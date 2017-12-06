@@ -1,0 +1,39 @@
+思路1：使用层序遍历，存储要加入层数的节点，加入一列。注意最后一行的情况！！
+
+代码：
+class Solution {
+public:
+    TreeNode* addOneRow(TreeNode* root, int v, int d) {
+        if(d == 1){
+           TreeNode* cur = new TreeNode(v); 
+            cur->left = root;
+            return cur;
+        }
+        queue<TreeNode*> que,que2;
+        que.push(root);
+        while(!que.empty()){
+            if(--d == 0) return root;
+            int size = que.size();
+            if(d == 1){
+                for(int i = 0;i<size;++i ){
+                    TreeNode* cur_left = new TreeNode(v);
+                    cur_left->left = que.front()->left;
+                    TreeNode* cur_right = new TreeNode(v);
+                    cur_right->right = que.front()->right;
+                    que.front()->left = cur_left;
+                    que.front()->right = cur_right;
+                    que.pop();
+                }
+            }else{
+                for(int i = 0;i<size;++i ){
+                if(que.front()->left) que.push(que.front()->left);
+                if(que.front()->right) que.push(que.front()->right);
+                que.pop();
+                }
+            }
+            
+        }       
+        return root;
+    }
+    
+};
