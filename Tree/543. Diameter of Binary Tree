@@ -1,0 +1,63 @@
+思路1：遍历每一个节点，求出其左右子树的最大深度，相加与最大值进行比较。
+代码：慢 23ms
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        if(root == NULL) return 0;
+        int res = 0,max  = INT_MIN;
+        stack<TreeNode*> s;
+        while(root || !s.empty()){
+            if(root){
+                s.push(root);
+                root = root->left;
+            }else{
+                int currentlen = getmaxdepth(s.top()->left)+1+getmaxdepth(s.top()->right)-1;
+                if(currentlen>max) max = currentlen;
+                root = s.top()->right;
+                s.pop();  
+            }
+        }
+        return max;
+    }
+    int getmaxdepth(TreeNode* root){
+        if(root == NULL ) return 0;
+        int left = getmaxdepth(root->left);
+        int right = getmaxdepth(root->right);
+        return max(left,right)+1;
+    }
+};
+
+最快：6ms
+class Solution {
+public:
+    int _recurse(TreeNode* root, int &ans) {
+        if (!root->left && !root->right) {
+            return 0;
+        }
+        
+        int left = 0, right = 0;
+        if (root->left) left = _recurse(root->left, ans) + 1;
+        if (root->right) right = _recurse(root->right, ans) + 1;
+        
+        if (left + right > ans) {
+            ans = left + right;
+        }
+        return max(left, right);
+    }
+    
+    int diameterOfBinaryTree(TreeNode* root) {
+        if (!root) return 0;
+        int ans = 0;
+        _recurse(root, ans);
+        return ans;
+    }
+};
