@@ -37,7 +37,7 @@ public:
     }
 };
 
-思路3：DFS递归
+思路3：DFS递归，思路大致是递归到每个节点都与保存的最左端节点进行比较，每个节点都计算一次，然后继续递归。
 代码1：6ms
 class Solution {
 public:
@@ -70,7 +70,7 @@ private:
         dfs(node->right, id * 2 + 1, depth + 1, lefts, maxwidth);
     }
 };
-思路4：BFS递归
+思路4：BFS 与我的思路2很接近，只是不是每层遍历完再比较而是每个节点都比较
 代码：
 class Solution {
 public:
