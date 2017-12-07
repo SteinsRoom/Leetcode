@@ -1,0 +1,40 @@
+思路1：
+按层序遍历便利每一层，对于没有元素的地方补充NULL，遍历一层的过程中更新left与right的大小，差值与max比较。但是有全右单列树的情况会超出内存，所以改用别的
+算法，代码没有保存。
+思路2：
+利用节点的坐标，对于坐标为i的节点，左右孩子分别是2i和2i+1,利用两个queue分别存储层序遍历不为空的节点和对应的节点编号。每次判断queue不为空后处理该层的index
+left right分别为index的最左最右值，差值与max进行比较，然后层序遍历获得下一层的节点与编号。
+代码：6ms
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if(root == NULL) return 0;
+        queue<TreeNode*> que;
+        queue<int> index;
+        que.push(root);
+        index.push(1);
+        int max = INT_MIN;
+        //bool end = false;
+        while(!que.empty()){
+            int size = que.size();
+            int left = index.front(),right = index.back();
+            int width = right>left?right-left+1:1;
+            if(width>max) max = width;
+            for(int i = 0;i<size;++i ){
+                if(que.front()->left){
+                    que.push(que.front()->left);
+                    index.push(2*index.front());
+                    }
+                if(que.front()->right){
+                    que.push(que.front()->right);
+                    index.push(2*index.front()+1);  
+                }
+                que.pop(); 
+                index.pop();
+            }
+        }
+        return max;
+    }
+};
+
+思路3：BFS递归
