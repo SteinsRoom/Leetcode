@@ -4,7 +4,7 @@
 思路2：
 利用节点的坐标，对于坐标为i的节点，左右孩子分别是2i和2i+1,利用两个queue分别存储层序遍历不为空的节点和对应的节点编号。每次判断queue不为空后处理该层的index
 left right分别为index的最左最右值，差值与max进行比较，然后层序遍历获得下一层的节点与编号。
-代码：6ms
+代码：6ms 多次提交也可到3ms（最快）
 class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
