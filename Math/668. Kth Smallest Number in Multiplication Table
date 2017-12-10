@@ -1,0 +1,25 @@
+题目含义：给定三个数字m,n,k，m与n代表一张m*n的乘法表，要求找出乘法表中数字从小到大排列的第k个最小的数。
+思路：使用二分查找。每次确定mid后计算乘法表中比mid小的数字个数count。对于count<k,要找的数一定在后面，left =mid+1；对于count = k，此时的结果不一定就是
+要找的数（因为前面可能有重复的数），所以该情况合并入count>k的情况，此时right = mid（不是减一来包含多个相同数字的情况）。最后left == right输出left。
+上述过程找到的相当于是包含第k个最小的数的相同数字中序号最小的数。
+代码：19ms
+class Solution {
+public:
+    int findKthNumber(int m, int n, int k) {
+        int left = 1,right = m*n;
+        while(left<right){
+            int mid = (left+right)/2;
+            int rows = mid/n;
+            int count = 0;
+            for(int i = m;i>0;--i){
+                count+=min(mid/i,n);
+            }
+            if(count<k){
+                left = mid+1;
+            }else{
+                right = mid;
+            }
+        }
+        return left;
+    }
+};
