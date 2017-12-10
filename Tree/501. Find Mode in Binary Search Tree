@@ -53,4 +53,34 @@ public:
 };
 
 思路2：改进空间复杂度为O(1)
-
+代码：
+class Solution {
+public:
+    vector<int> findMode(TreeNode* root) {
+        int maxfreq = 0,pre ,count = 0;//,pre = 0;
+        vector<int> res;
+        GetMaxFreq(root,pre,maxfreq,count);
+        count  = 0;
+        GetNodes(root,pre,maxfreq,res,count);
+        //res.push_back(maxfreq);
+        return res;
+        
+    }
+    void GetMaxFreq(TreeNode* root,int& pre,int& maxfreq,int& count){
+        if(root == NULL) return;
+        GetMaxFreq(root->left,pre,maxfreq,count);
+        count = root->val == pre?++count:1;
+        maxfreq = max(maxfreq,count);     
+        pre = root->val;
+        GetMaxFreq(root->right,pre,maxfreq,count);
+    }
+    void GetNodes(TreeNode* root,int& pre,int& maxfreq,vector<int>& result,int& count){
+        if(root == NULL) return;
+        GetNodes(root->left,pre,maxfreq,result,count);
+        count = root->val == pre?++count:1;
+        if(count == maxfreq) result.push_back(root->val);
+        pre = root->val;
+        GetNodes(root->right,pre,maxfreq,result,count);
+    }
+    
+};
