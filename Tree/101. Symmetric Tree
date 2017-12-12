@@ -22,7 +22,7 @@ public:
         if(root->right) helper(root->right,temp);
     }
 };
-思路2：失败
+思路2：失败 想用左右两边的中序遍历作比较
 class Solution {
 public:
     bool isSymmetric(TreeNode* root) {
@@ -50,5 +50,73 @@ public:
         if(root->right) helperright(root->right,temp);
         if(root->left) helperright(root->left,temp);
         
+    }
+};
+
+思路3：上述两个思路的错误之处在于忘记唯一确定一颗二叉树需要中序加前序或者后序，所以同时获得左右两颗子树的两种遍历再进行判断可以得出
+代码：6ms   时间复杂度：O（N）
+            空间复杂度 O（N）
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(!root)return true;
+        vector<int> templ,tempr;
+        inorderl(root->left,templ);
+        preorderl(root->left,templ);
+        inorderr(root->right,tempr);
+        preorderr(root->right,tempr);
+        int sizel = templ.size();
+        int sizer = tempr.size();
+        //return sizel == sizer;
+        if(sizel!=sizer) return false;
+        for(int i = 0;i<sizer;++i){
+            if(templ[i]==tempr[i])continue;
+            else return false;
+        }
+        return true;
+    }
+    void inorderl(TreeNode* root,vector<int>& temp){
+        if(!root) return;
+        if(root->left) inorderl(root->left,temp);
+        temp.push_back(root->val);
+        if(root->right) inorderl(root->right,temp);
+    }
+    void preorderl(TreeNode* root,vector<int>& temp){
+        if(!root) return;
+        temp.push_back(root->val);
+        if(root->left) preorderl(root->left,temp);   
+        if(root->right) preorderl(root->right,temp);
+    }
+    void inorderr(TreeNode* root,vector<int>& temp){
+        if(!root) return;
+        if(root->right) inorderr(root->right,temp);
+        temp.push_back(root->val);
+        if(root->left) inorderr(root->left,temp); 
+    }
+    void preorderr(TreeNode* root,vector<int>& temp){
+        if(!root) return;
+        temp.push_back(root->val);
+        if(root->right) preorderr(root->right,temp);
+        if(root->left) preorderr(root->left,temp);         
+    }
+};
+
+思路4：利用DFS直接一次遍历过程中判断,迭代解法
+      可以优化的点：判断两个节点是否都不为空h或者都为空：
+                   if（node1 == NULL || node2 == NULL） return node1 == node2；
+代码：6ms 优化后的也是6ms/3ms(最快)
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        if(!root)return true;
+        return DFS(root->left,root->right);
+        
+    }
+    bool DFS(TreeNode* left,TreeNode* right){
+        if(left == NULL && right == NULL) return true;
+        else if(!(left != NULL && right != NULL)) return false;
+        else{
+            return (left->val == right->val) && DFS(left->left,right->right) && DFS(left->right,right->left);
+        }
     }
 };
