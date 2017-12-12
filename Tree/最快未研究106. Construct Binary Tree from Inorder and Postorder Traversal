@@ -1,0 +1,45 @@
+思路：
+与前中思路相同，主要区别在左右子树的根节点位置从后向前确定，确定左子树根节点的计算：rootindex与x之间间隔了posin与inend之间间隔的元素加一（因为算入了posin）
+也即rootindex-x = inend-posin+1，x = rootindex-inend+posin-1;  
+
+代码：16ms
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        return DecideNode(postorder.size()-1,0,inorder.size()-1,inorder,postorder);
+    }
+    TreeNode* DecideNode(int rootindex,int instart,int inend,vector<int>& inorder, vector<int>& postorder){
+        if(instart>inend) return NULL;
+        int rootval = postorder[rootindex];
+        TreeNode* root = new TreeNode(rootval);
+        int posin = 0;
+        for(int i = instart;i<= inend;++i){
+            if(inorder[i] == rootval) {posin = i;break;}
+        }
+        root->left = DecideNode(rootindex+posin-inend-1,instart,posin-1,inorder,postorder);
+        root->right = DecideNode(rootindex-1,posin+1,inend,inorder,postorder);
+        
+        return root;
+    }
+};
+
+
+最快;9ms
+class Solution {
+    TreeNode* dfs(vector<int>& preorder, vector<int>& inorder, int& p, int& i, TreeNode* stop) {
+        if (i < inorder.size() and (stop == NULL or inorder[i] != stop->val)) {
+            TreeNode* ret = new TreeNode(preorder[p++]);
+            ret->left = dfs(preorder, inorder, p, i, ret);
+            i++;
+            ret->right = dfs(preorder, inorder, p, i, stop);
+            return ret;
+        }
+        else
+            return NULL;
+    }
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int p = 0, i = 0;
+        return dfs(preorder, inorder, p, i, NULL);
+    }
+};
