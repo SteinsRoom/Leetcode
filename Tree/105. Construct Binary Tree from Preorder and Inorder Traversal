@@ -20,3 +20,7 @@ public:
         return root;
     }
 };
+
+ 
+改进时间：16ms（大多数水平）  最快9ms
+将代码中preorder[rootindex]替换为固定值而不是每次都读取可以加快3ms
