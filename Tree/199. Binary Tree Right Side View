@@ -1,0 +1,24 @@
+题目含义：输出每层最右侧的节点
+思路：层序遍历
+代码：3ms（已最快）
+class Solution {
+public:
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> res;
+        if(!root) return res;
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty()){
+            int size = que.size();
+            res.push_back(que.back()->val);
+            for(int i = 0;i<size;++i){
+                if(que.front()->left) que.push(que.front()->left);
+                if(que.front()->right) que.push(que.front()->right);
+                que.pop();
+            }
+        }
+        return res;
+    }
+};
+
+其余思路：
