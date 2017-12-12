@@ -22,3 +22,33 @@ public:
         if(root->right) helper(root->right,temp);
     }
 };
+思路2：失败
+class Solution {
+public:
+    bool isSymmetric(TreeNode* root) {
+        vector<int> templeft,tempright;
+        helperleft(root,templeft);
+        helperright(root,tempright);
+        int size = templeft.size();
+        for(int i = 0;i<size;++i){
+            if(templeft[i] == tempright[i]) continue;
+            else return false;              
+        }
+        return true;
+        
+    }
+    void helperleft(TreeNode* root,vector<int>& temp){
+        if(!root) return ;
+        temp.push_back(root->val);
+        if(root->left) helperleft(root->left,temp); 
+        if(root->right) helperleft(root->right,temp);
+    }
+    
+    void helperright(TreeNode* root,vector<int>& temp){
+        if(!root) return ;
+        temp.push_back(root->val);
+        if(root->right) helperright(root->right,temp);
+        if(root->left) helperright(root->left,temp);
+        
+    }
+};
