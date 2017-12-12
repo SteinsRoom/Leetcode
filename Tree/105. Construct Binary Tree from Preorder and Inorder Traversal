@@ -1,0 +1,22 @@
+思路1：
+利用递归，递归函数的参数考虑为当前根节点在preorder中的序号，当前根节点对应的左子树或右子树在inorder中的范围instart，inend。这里也可以添加在preorder中
+的范围来判断是否处理完毕，但是浪费空间，中序的范围因为要进行查找不可缺少所以选择用中序判断。每次在中序范围中查找值为preorder[rootindex]的节点下标，利用
+该下标可以确定下一个左右子树的范围以及其根节点在preorder中的下标（左子树：rootindex+1；右子树：rootindex+posin-instat+1）；
+代码：19ms：
+class Solution {
+public:
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        return DecideNode(0,0,preorder.size()-1,preorder,inorder);
+    }
+    TreeNode* DecideNode(int rootindex,int Instart,int Inend,vector<int>& preorder, vector<int>& inorder){
+        if(Instart>Inend) return NULL;
+        TreeNode* root = new TreeNode(preorder[rootindex]);
+        int posin = 0;
+        for(int i = Instart;i<=Inend;++i){
+            if(inorder[i] == preorder[rootindex]) {posin = i; break;}
+        }
+        root->left = DecideNode(rootindex+1,Instart,posin-1,preorder,inorder);
+        root->right = DecideNode(rootindex+1+posin-Instart,posin+1,Inend,preorder,inorder);
+        return root;
+    }
+};
