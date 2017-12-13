@@ -1,0 +1,71 @@
+题目含义：给定一颗二叉树，将其转化为全部在最右侧的“链表式”二叉树
+思路1：利用前序遍历得到存有所有节点的queue，再将其连接成链表。
+代码：13ms 很慢   时间复杂度：O（N） 空间复杂度：O（N）
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        queue<TreeNode*> que;
+        stack<TreeNode*> sta;
+        if(!root) return;
+        sta.push(root);
+        while(!sta.empty()){
+            if(root){
+                que.push(root);
+                sta.push(root);
+                root = root->left;
+            }else{
+                root = sta.top()->right;
+                sta.pop();
+            }
+        }
+        int size = que.size();
+        root = que.front();
+        for(int i = 0;i<size-1;++i){
+            TreeNode* temp = que.front();
+            que.pop();
+            temp->left = NULL;
+            temp->right = que.front();
+        }
+    }
+};
+
+思路2：无需其他辅助数据结构，直接操作，对于一个同时有左子树和右子树的节点，将其右子树移动到左子树的最右侧节点的右子树上，对于只有左子树的节点将左子树移动到
+右子树，将左子树置空然后继续处理当前节点的右子节点。
+代码：9ms
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        while(root){
+            if(root->left && root->right){
+                TreeNode* node = root->left;
+                while(node->right) node = node->right;
+                node->right = root->right;
+            }
+            if(root->left) 
+                root->right = root->left;
+            root->left = NULL;
+            root = root->right;
+        }
+    }
+};
+
+思路3：
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        TreeNode* l, *r;
+        DFS(root, l, r);
+    }
+    
+    TreeNode* DFS(TreeNode* &root, TreeNode* &l, TreeNode* &r){
+        if(!root) return NULL;
+        l = DFS(root->left, l, r);
+        if(l){
+            l->right = root->right;
+            root->right = root->left;
+            root->left = NULL;
+        }
+        r = DFS(root->right, l, r);
+        return r ? r : l ? l : root;
+    }
+};
