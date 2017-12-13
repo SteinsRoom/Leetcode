@@ -1,0 +1,35 @@
+题目含义：
+要求给出所有根节点到叶子结点的路径和等于给定值的路径。
+思路：
+利用递归不断处理新加入节点，注意本次遇到的问题是函数参数使用了引用的vector temp来存储路径上的值，每次在左右两个分支均遍历完后需要将temp中放入的当前节点
+的值删除，方法是erase(temp.end()-1)
+代码：9ms 已最快
+class Solution {
+public:
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vector<int> temp;
+        vector<vector<int>> res;
+        //int sumtemp = 0;
+        DFS(root,0,sum,temp,res);
+        return res;
+    }
+    void DFS(TreeNode* root, int sum,int key,vector<int>& temp,vector<vector<int>>& res){
+        if(root == NULL ) return;
+        sum+=root->val;
+        if(root->left==NULL && root->right == NULL){
+            if(sum == key){
+                temp.push_back(root->val);
+                res.push_back(temp);
+                temp.erase(temp.end()-1);
+                return;
+            }else{
+                return;
+            }
+        }else{
+            temp.push_back(root->val);
+            if(root->left) DFS(root->left,sum,key,temp,res);
+            if(root->right) DFS(root->right,sum,key,temp,res);
+            temp.erase(temp.end()-1);
+        }
+    }
+};
