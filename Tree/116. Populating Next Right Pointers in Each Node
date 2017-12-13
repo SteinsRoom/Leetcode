@@ -1,0 +1,18 @@
+思路1：利用迭代直接确定左右子树的next节点
+代码：16ms 时间复杂度O（N） 空间复杂度O（N）
+class Solution {
+public:
+    void connect(TreeLinkNode *root) {
+        if(!root) return;
+        if(!root->left) return;
+        if(root->next == NULL){
+            root->left->next = root->right;
+        }else{
+            root->right->next = root->next->left;
+            root->left->next = root->right;
+        }
+        connect(root->left);
+        connect(root->right);
+    }
+
+};
