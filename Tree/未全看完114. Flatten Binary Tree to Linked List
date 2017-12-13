@@ -69,3 +69,59 @@ public:
         return r ? r : l ? l : root;
     }
 };
+
+思路4：思路2的进一步简化 6ms
+class Solution {
+public:
+    TreeNode* head = NULL;
+    void flatten(TreeNode* root) {
+        
+        while(root)
+        {
+            if(root->left)
+            {
+                TreeNode* curr = root->left;
+                while(curr->right)
+                {
+                    curr = curr->right;
+                }
+                curr->right = root->right;
+                root->right = root->left;
+                root->left = NULL;
+            }
+            root = root->right;
+        }
+    }
+};
+
+最快3ms：自己提交也是9/6ms
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        if(!root) return;
+        helper(root);
+    }
+    TreeNode * helper(TreeNode* root){
+        if(!root) return root;
+        TreeNode *left_end = helper(root->left);
+        TreeNode *right_end = helper(root->right);
+        
+        if(left_end && right_end){
+            left_end->right = root->right;
+            root -> right = root->left;
+            root -> left  = NULL;
+            return right_end;
+        }
+        if(left_end && !right_end){
+            root->right = root->left;
+            root->left = NULL;
+            return left_end;
+        }
+        if(!left_end && right_end){
+            return right_end;
+        }
+        
+        return root;
+        
+    }
+};
