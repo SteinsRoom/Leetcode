@@ -1,6 +1,7 @@
 题目含义：判断一棵树是不是BST
 思路1：中序遍历，存储pre与cur的值，如果pre>=cur则为false。特别注意pre初始值设置为INT_MIN，如果第一个节点值也为INT_MIN会报错，因此设立一个bool值判断是不是
 遍历到第一个节点，之后将其设置为false.但是这种方法可能不太好。
+更新：这种方式也可以，能够避免使用INT_MIN，这里还可以将pre设置为节点类型而不是int类型，初始将pre设置为NULL，采用和first相同的判断逻辑。
 代码：9ms  时间复杂度：O(N）? 空间复杂度O（N）
 class Solution {
 public:
