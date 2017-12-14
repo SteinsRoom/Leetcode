@@ -1,0 +1,46 @@
+题目含义：判断一棵树是不是BST
+思路1：中序遍历，存储pre与cur的值，如果pre>=cur则为false。特别注意pre初始值设置为INT_MIN，如果第一个节点值也为INT_MIN会报错，因此设立一个bool值判断是不是
+遍历到第一个节点，之后将其设置为false.但是这种方法可能不太好。
+代码：9ms  时间复杂度：O(N）? 空间复杂度O（N）
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        if(!root || (root->left == NULL && root->right == NULL)) return true;
+        stack<TreeNode*> sta;
+        bool res = true,first  = true;
+        int pre = INT_MIN,cur = 0;
+        while(root||!sta.empty()){
+            if(root){
+                sta.push(root);
+                root = root->left;
+            }else{
+                cur = sta.top()->val;
+                if(cur<=pre&&!first){res = false;break;}
+                first = false;
+                pre = cur;
+                root = sta.top()->right;
+                sta.pop();    
+            }
+        }
+        return res;
+    }
+};
+
+思路2：
+利用递归，让空间复杂度降为O（1）； 9ms
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        bool res = true,first  = true;
+        int pre = INT_MIN;
+        Inorder(root,first,res,pre);
+        return res;
+    }
+    void Inorder(TreeNode* root,bool& first,bool& res,int& pre){
+        if(!root) return;
+        Inorder(root->left,first,res,pre);
+        if(pre>=root->val && !first){res = false;}
+        first = false,pre = root->val;
+        Inorder(root->right,first,res,pre);
+    }
+};
