@@ -1,0 +1,53 @@
+题目含义：
+给定一个排好序的数组，其中每个数字都是成对出现只有一个数字只出现了一次，要求找出这个数字
+要求使用O（logn）的时间与O(1)的空间复杂度
+思路1：
+利用二分查找，将所有的奇数位置的数进行二分查找，可以通过判断其与前面还是后面的数相等来变更上下界。首先排除左右两端的节点，然后用二分查找确定要找的值。
+代码：很慢 9ms（可以到6ms）
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int size = nums.size();
+        if(size == 1) return nums[0];
+        int left = 0,right = size-1;
+        if(nums[left]!=nums[left+1]) return nums[left];
+        if(nums[right]!=nums[right-1]) return nums[right];
+        //right/=2;
+        while(left<right){
+            int mid = (((left+right)>>1)&1)?(left+right)/2-1:(left+right)/2; 
+            if(nums[mid] == nums[mid+1]){
+                left+=2;
+            }else if(nums[mid] == nums[mid-1]){
+                right-=2;
+            }else{
+                return nums[mid];
+            }
+        }
+        
+    }
+};
+
+思路2：优化运行时间
+让left和right均除以2，计算出mid后乘以二，省去了每次while循环判断的步骤
+稳定6ms
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int size = nums.size();
+        if(size == 1) return nums[0];
+        int left = 0,right = size-1;
+        if(nums[left]!=nums[left+1]) return nums[left];
+        if(nums[right]!=nums[right-1]) return nums[right];
+        right/=2;
+        while(left<right){
+            int mid = (left+right)/2*2; 
+            if(nums[mid] == nums[mid+1]){
+                ++left;
+            }else if(nums[mid] == nums[mid-1]){
+                --right;
+            }else{
+                return nums[mid];
+            }
+        }       
+    }
+};
