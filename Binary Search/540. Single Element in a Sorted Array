@@ -40,7 +40,7 @@ public:
         if(nums[right]!=nums[right-1]) return nums[right];
         right/=2;
         while(left<right){
-            int mid = (left+right)/2*2; 
+            int mid = (left+right)/2*2; //可以将其改为位运算加快速度 int mid = ((left+right)>>1)<<1; 
             if(nums[mid] == nums[mid+1]){
                 ++left;
             }else if(nums[mid] == nums[mid-1]){
