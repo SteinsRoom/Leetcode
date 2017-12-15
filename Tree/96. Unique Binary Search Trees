@@ -1,0 +1,39 @@
+题目含义：给定一个数字n，要求给出从1至n的数字能够组成多少种不同结构的二叉搜索树
+思路1：利用递归求解，但是超时了。思路是可以得出只有一个和没有数字时的种类数，然后对于数字n，其种类数等于其中每个数作为树根时比它大和比他小的的的种类数相乘，
+最终的结果是每个数字对应的种类数求和。
+class Solution {
+public:
+    int numTrees(int n) {
+        return GetTreeNum(n);
+    }
+    int GetTreeNum(int n){
+        if(n == 0 || n == 1) return 1;
+        int sum = 0;
+        for(int i = 0;i<n;++i){
+            sum+=GetTreeNum(i)*GetTreeNum(n-1-i);
+        }
+        return sum;
+    }
+};
+思路2：利用查表先做出1至n的不同数字的对应结果，再返回。
+代码：0ms  
+class Solution {
+public:
+    int numTrees(int n) {
+        vector<int> res;
+        res.push_back(1);
+        res.push_back(1);
+        for(int i = 2;i<=n;++i){
+            GetTreeNum(res,i);
+        }
+        return res[n];
+    }
+    void GetTreeNum(vector<int>& res,int n){
+        int sum = 0;
+        for(int i = 0;i<n;++i){
+            sum+=res[i]*res[n-1-i];
+        }
+        res.push_back(sum);
+        
+    }
+};
