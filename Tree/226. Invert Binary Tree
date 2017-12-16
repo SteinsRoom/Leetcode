@@ -1,0 +1,19 @@
+题目含义：将二叉树水平翻转
+思路：递归交换左右子树
+代码：0ms
+class Solution {
+public:
+    TreeNode* invertTree(TreeNode* root) {
+        
+        Invert(root);
+        return root;
+    }
+    void Invert(TreeNode* root){
+        if(root == NULL|| (root->left == NULL && root->right == NULL)) return;
+        TreeNode* temp = root->left;
+        root->left = root->right;
+        root->right = temp;
+        Invert(root->left);
+        Invert(root->right);
+    }
+};
