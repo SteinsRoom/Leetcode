@@ -1,0 +1,27 @@
+题目含义：给定一颗二叉树，要求给出所有路径从根到叶子节点所表示的数字之和
+思路：DFS，递归相加
+代码：3ms
+class Solution {
+public:
+    int sumNumbers(TreeNode* root) {
+        int res = 0;
+        vector<int> path;
+        DFS(root,res,path);
+        return res;
+    }
+    void DFS(TreeNode* root,int& sum,vector<int>& path){
+        if(root ==NULL) return;
+        path.insert(path.begin(),root->val);
+        if(root->left == NULL && root->right == NULL){
+            int size = path.size();
+            for(int i = 0;i<size;++i){
+                sum+=path[i]*pow(10,i);
+            }
+            path.erase(path.begin());
+            return;
+        }        
+        if(root->left)DFS(root->left,sum,path);       
+        if(root->right)DFS(root->right,sum,path);
+        path.erase(path.begin());
+    }
+};
