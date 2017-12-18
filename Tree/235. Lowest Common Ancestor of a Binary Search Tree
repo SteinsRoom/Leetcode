@@ -1,0 +1,50 @@
+题目：给定一颗二叉搜索树和任意两个节点，找出它们的最低公共祖先
+思路1：失败 用两个节点中间的部分进行判断，判断子树很繁琐
+代码：
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        stack<TreeNode*> sta;
+        vector<TreeNode*> res;
+        TreeNode* first;
+        TreeNode* second;
+        if(p->val<q->val){
+            first = p,second = q;
+        }else{
+            first = q,second = p;
+        }
+        bool start = false;
+        while(root || !sta.empty()){
+            if(root){
+                sta.push(root);
+                root = root->left;
+            }else{
+                if(sta.top()->val == first->val) start = true;
+                if(start){
+                    res.push_back(sta.top());
+                    if(sta.top()->val == second->val)
+                        break;
+                }
+                root = sta.top()->right;
+                sta.pop();
+            
+            }
+        }
+        int index = 0;
+        if(res.size()%2 == 0){
+            if(second->left){
+                TreeNode* temp = second->left;
+                while(temp->right)temp = temp->right;
+                if(temp->val ==first->val) index = 1;
+                else index = 0;
+            }else{
+                index = 0;
+            }
+        }else{
+            index = res.size()/2;
+        }
+        return res[index];
+    }
+};
+
+思路2：通用 判断子树
