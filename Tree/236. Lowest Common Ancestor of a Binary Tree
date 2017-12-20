@@ -1,0 +1,29 @@
+思路：直接用递归访问节点，若找到目标节点则返回节点，为空返回空。对于一个节点，left，right返回结果是否为空反应是否找到目标节点，在都不为空时返回root作为
+结果，否则返回不为空的那个或者都为NULL时的任意一个。整个递归中能够返回非空值的只有找到目标节点的分支，在找到最低的祖先后，对于上一级节点来说left或right
+中一个必为空，所以返回非空的那个节点。这样可以将找到的节点返回到最上层。
+代码：13ms 最快
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root || root == p || root == q)   return root;
+        TreeNode* left = lowestCommonAncestor(root->left,p,q);
+        TreeNode* right = lowestCommonAncestor(root->right,p,q);
+        if(left && right) return root;
+        return left?left:right;
+    }
+};
+
+优化：
+如果找到结果且返回的结果不是p或者q，将找到的结果直接返回，不用再做另一个分支的递归
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(!root || root == p || root == q)   return root;
+        TreeNode* left = lowestCommonAncestor(root->left,p,q);
+        if(left && left!=p && left!=q) return left;
+        TreeNode* right = lowestCommonAncestor(root->right,p,q);
+        if(right && right!=p && right!=q) return right;
+        if(left && right) return root;
+        return left?left:right;
+    }
+};
