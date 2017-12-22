@@ -1,0 +1,17 @@
+题目含义：给定一个有序数组，将其转化为平衡的二叉排序树。
+思路：一开始以为要从头构造并且在构造中不断恢复平衡，很复杂，但是看了答案很无语。可以利用平衡二叉排序树的性质直接确定根节点。
+代码：13ms
+class Solution {
+public:
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return convertArrayToBST(nums,0,nums.size());
+    }
+    TreeNode* convertArrayToBST(vector<int>& nums,int begin,int end){
+        if(begin>=end)return NULL;
+        int mid = (begin+end)/2;
+        TreeNode* root = new TreeNode(nums[mid]);
+        root->left = convertArrayToBST(nums,begin,mid);
+        root->right = convertArrayToBST(nums,mid+1,end);
+        return root;
+    }
+};
