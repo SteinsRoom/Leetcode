@@ -1,0 +1,73 @@
+题目含义：给定一个二叉搜索树和一个范围，要求删去所有不在范围内的节点，并保持原有节点相对位置不变。
+思路：一开始没有看到是BST，当成普通的树处理。想到的大致思路是用前序遍历，不在范围内的节点执行delete函数并返回删除后的节点，继续遍历直至完成。（代码为未现
+）。利用递归，对于比L小的节点访问其右子树，否则为左子树。在范围内则对其左右节点作为根继续调用。
+代码：16ms
+class Solution {
+public:
+    TreeNode* trimBST(TreeNode* root, int L, int R) {
+        if(!root) return NULL;
+        if(root->val<L) return trimBST(root->right,L,R);
+        if(root->val>R) return trimBST(root->left,L,R);
+        root->left = trimBST(root->left,L,R);
+        root->right = trimBST(root->right,L,R);
+        return root;
+    };
+};
+
+
+考虑删除节点：
+如果删除整个树的root节点OJ会报错，需要保留根root节点。
+从root删除节点：删除的节点左右子树要置空，必须保留第一个根节点，否则会报错
+class Solution {
+public:
+    TreeNode* trimBST(TreeNode* root, int L, int R) {
+        return totrimBST(root,L,R,true);
+    };
+    TreeNode* totrimBST(TreeNode* root, int L, int R,bool first) {
+        if(!root) return root;
+        if(root->val<L){
+            Delete(root->left);
+            TreeNode* right = root->right;
+            root->left = NULL;root->right = NULL;
+            if(!first)delete root;
+            return totrimBST(right,L,R,false);
+        }else if(root->val>R){
+            Delete(root->right);
+            TreeNode* left = root->left;
+            root->left = NULL;root->right = NULL;
+            if(!first)delete root;
+            return totrimBST(left,L,R,false);
+        }
+        root->left = totrimBST(root->left,L,R,false);
+        root->right = totrimBST(root->right,L,R,false);
+        return root;
+        
+    };
+    void Delete(TreeNode* root){
+        if(!root) return;
+        Delete(root->left);
+        Delete(root->right);
+        root->left = NULL;root->right = NULL;
+        delete root;
+    }
+};
+
+从保留根root节点：
+class Solution {
+public:
+    TreeNode* trimBST(TreeNode* root, int L, int R) {
+        return totrimBST(root,L,R);
+    };
+    TreeNode* totrimBST(TreeNode* root, int L, int R, bool top=true) {
+    if (!root)
+        return root;
+    root->left = totrimBST(root->left, L, R, false);
+    root->right = totrimBST(root->right, L, R, false);
+    if (root->val >= L && root->val <= R)
+        return root;
+    auto result = root->val < L ? root->right : root->left;
+    if (!top)
+        delete root;
+    return result;
+}
+};
