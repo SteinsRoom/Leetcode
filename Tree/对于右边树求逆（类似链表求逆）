@@ -1,0 +1,17 @@
+TreeNode* ReverseTree(TreeNode* root){  
+    if(!root) return;
+    TreeNode* pre = NULL;
+    TreeNode* next = NULL;
+    while(root!=NULL){
+        next  = root->right;
+        root->next = pre;
+        pre = root;
+        root = next;
+    }
+    return pre;
+}
+
+例子：对于1——2——3的右边树
+第一轮：next：2 1->right = pre(NULL),pre = 1;root = 2;
+第二轮：next:3;2->right  = pre(1),pre = 2;root = 3;
+第三轮：next：NULL;3->right = pre(2),pre = 3;root  = NULL ——作为判断结束的依据，pre存储逆转后的首个节点指针
