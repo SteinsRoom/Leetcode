@@ -18,6 +18,7 @@ public:
 考虑删除节点：
 如果删除整个树的root节点OJ会报错，需要保留根root节点。
 从root删除节点：删除的节点左右子树要置空，必须保留第一个根节点，否则会报错
+16ms 16ms 26ms
 class Solution {
 public:
     TreeNode* trimBST(TreeNode* root, int L, int R) {
@@ -52,7 +53,7 @@ public:
     }
 };
 
-从保留根root节点：
+从保留根root节点： 也能16ms 32ms
 class Solution {
 public:
     TreeNode* trimBST(TreeNode* root, int L, int R) {
