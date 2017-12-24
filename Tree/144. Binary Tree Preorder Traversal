@@ -1,0 +1,36 @@
+题目含义：前序遍历
+对于基本的递归遍历与利用栈完成的非递归遍历，这两种遍历方法所需的空间复杂度均为O(N)。
+对于Morris遍历方法，所需的空间复杂度只有O（1）
+思路：相比于中序遍历，只是需要改变访问p1节点的时机：每次在设置叶子结点的right指针后，p1 = p1->left之前访问；还有是在p1节点不存在左子树时直接访问，然后
+换到右子树
+代码：3ms
+class Solution {
+public:
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> res;;
+        auto p1 = root;
+        TreeNode* p2 = NULL;
+        while(p1){
+            //res.push_back(p1->val);
+            p2 = p1->left;
+            if(p2){
+                while(p2->right!=NULL && p2->right!=p1) p2 = p2->right;
+                if(p2->right == NULL){
+                    p2->right = p1;
+                    res.push_back(p1->val);
+                    p1 = p1->left;
+                    continue;
+                }else{
+                    p2->right = NULL;
+                    p1 = p1->right;
+                }  
+            }else{
+                res.push_back(p1->val);
+                p1 = p1->right; 
+            }
+               
+                                
+        }
+        return res;
+    }
+};
