@@ -1,0 +1,26 @@
+题目含义：二叉树中有两个节点交换了，找出这两个节点
+思路1：
+利用交换后的节点在中序遍历中的相对位置关系，第一个节点时比后面的元素大，第二个元素是比前一个元素小。一次中序遍历即可。
+代码：55ms 55ms 65ms 
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        TreeNode* temp1 = NULL;
+        TreeNode* temp2 = NULL;
+        TreeNode* pre = new TreeNode(INT_MIN);
+        findnode(root,temp1,temp2,pre);
+        int temp = temp1->val;
+        temp1->val =temp2->val;
+        temp2->val = temp;
+    }
+    void findnode(TreeNode* root,TreeNode*& n1,TreeNode*& n2,TreeNode*& pre){
+        if(!root) return;
+        findnode(root->left,n1,n2,pre);
+        if(n1==NULL && pre->val>=root->val) n1 = pre;
+        if(n1!=NULL && pre->val>=root->val) n2 = root;
+        pre = root;
+        findnode(root->right,n1,n2,pre);
+    }
+};
+
+思路2：Morris 遍历
