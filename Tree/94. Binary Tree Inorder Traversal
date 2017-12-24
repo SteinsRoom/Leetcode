@@ -44,3 +44,30 @@ public:
 private:
     vector<int> result;
 };
+
+Morris遍历：
+思路：利用叶子节点的空余左右指针，将其有指针指向直接后继节点。
+流程：对于一个节点p1，p2 = p1 ->left.
+      p2不为空时，找到其最右节点，若最右节点的right不指向p1，将其指向p1，p1向左下移动，跳出循环继续修改叶子节点的right指针，直至遇到==p1
+      所有right指针修改完毕，输出p1指针的值，p1 = p1->right
+代码：0ms 3ms
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector<int> res;
+        if(!root) return res;
+        TreeNode* p1 = root;
+        TreeNode* p2 = NULL;
+        while(p1!=NULL){
+            p2 = p1->left;
+            if(p2){
+               while(p2->right!=NULL && p2->right!=p1) p2 = p2->right;
+                if(p2->right == NULL) {p2->right = p1;p1 = p1->left;continue;}
+                else{p2->right = NULL;} 
+            }
+            res.push_back(p1->val);
+            p1 = p1->right;
+        }
+        return res;
+    }
+};
