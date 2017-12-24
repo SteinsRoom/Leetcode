@@ -1,0 +1,64 @@
+题目含义：将一颗二叉树转化为string后再解码为一颗二叉树
+
+代码：
+目前全正数可以实现，但是出现负数还无法处理
+class Codec {
+public:
+
+    // Encodes a tree to a single string.
+    string serialize(TreeNode* root) {
+        queue<TreeNode*> que;
+        string res;
+        if(!root) return res;
+        que.push(root);
+        int maxdepth = GetDepth(root);
+        int level = 0;
+        while(!que.empty() && level<maxdepth){
+            int size = que.size();
+            for(int i = 0;i<size;++i){
+                if(que.front() == NULL){
+                    res+=" ";
+                    que.push(NULL);
+                    que.push(NULL);                    
+                }else{
+                    res+=to_string(que.front()->val);
+                    que.push(que.front()->left);
+                    que.push(que.front()->right);
+                }
+                que.pop();   
+            }
+            level++;
+        }
+        int tailnull = 0;
+        int len = res.length();
+        for(int i = len-1;i>=0;--i){
+            if(res[i] == ' '){
+                tailnull++;
+            }else{
+               break; 
+            }
+        }
+        res.erase(res.end()-tailnull,res.end());
+        return res;
+    }
+    int GetDepth(TreeNode* root){
+        if(!root) return 0;
+        return 1+max(GetDepth(root->left),GetDepth(root->right));
+    }
+
+    // Decodes your encoded data to tree.
+    TreeNode* deserialize(string data) {
+        int len = data.length();
+        if(len == 0) return NULL;
+        return ConstructTree(data,len,1);
+        
+    }
+    TreeNode* ConstructTree(string& data,int& len,int index){
+        if(index>len) return NULL;
+        if(data[index-1] == ' ') return NULL;
+        TreeNode* root  = new TreeNode(data[index-1]-'0');
+        root->left = ConstructTree(data,len,2*index);
+        root->right = ConstructTree(data,len,2*index+1);
+        return root;
+    }
+};
