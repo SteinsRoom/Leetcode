@@ -1,0 +1,28 @@
+题目含义：给定一个二叉树，判断它是否是平衡二叉树
+思路：利用前中后序遍历每一个节点，判断其左右子树的高度差是否在2以内。
+代码：9ms 大多数
+class Solution {
+public:
+    bool isBalanced(TreeNode* root) {
+        if(!root) return true;
+        stack<TreeNode*> sta;
+        bool balanced = true;
+        while(root || !sta.empty()){
+            if(root){
+                int left = GetDepth(root->left);
+                int right = GetDepth(root->right);
+                if(abs(left-right)<2){sta.push(root->right);root = root->left;} 
+                else{balanced = false;break;}
+            }else{
+                root = sta.top();
+                sta.pop();
+            }
+        }
+        return balanced;
+    }
+    int GetDepth(TreeNode* root){
+        if(!root) return 0;
+        return 1+max(GetDepth(root->left),GetDepth(root->right));
+    }
+};
+
