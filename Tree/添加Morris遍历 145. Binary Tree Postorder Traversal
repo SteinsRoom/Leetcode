@@ -1,0 +1,59 @@
+求二叉树的后序遍历：
+对于基本的基于递归与基于一个栈的非递归遍历算法，其运算的空间复杂度均为O（N），使用Morris遍历算法可以将空间复杂度降低至O（1）
+思路：
+同样是修改访问节点的值的位置，需要借助两个辅助函数，一个功能是将一棵树的右边界逆序排列，另外一个函数是将其输出并将树恢复为原来的次序（通过调用两次逆序
+排列函数完成）
+访问节点的时机一个是在遍历完当前子树，p2->right = p1时，打印输出p1->left对应的右边界树，
+            另一个是在完成所有便利后，打印输出root对应的右边界树
+代码：0ms 3ms
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        //Morris遍历
+        vector<int> res;
+        if(!root) return res;
+        TreeNode* p1 = root;
+        TreeNode* p2 = NULL;
+        while(p1){
+            p2 = p1->left;
+            if(p2){
+                while(p2->right!=NULL && p2->right !=p1) p2 = p2->right;
+                if(p2->right == NULL){
+                    p2->right = p1;
+                    //res.push_back(p1->val);
+                    p1 = p1->left;
+                    continue;
+                }else{
+                    p2->right = NULL;
+                    PrintEdge(p1->left,res);
+                }
+            }
+            p1 = p1->right;
+        }
+        PrintEdge(root,res);
+        return res;
+    }
+    
+    void PrintEdge(TreeNode*& root,vector<int>& res){
+        auto lastnode = ReverseRightEdge(root);
+        auto cur = lastnode;
+        while(cur){
+            res.push_back(cur->val);
+            cur = cur->right;
+        }
+        ReverseRightEdge(lastnode);
+    }
+    
+    TreeNode* ReverseRightEdge(TreeNode*& root){
+        if(!root) return NULL;
+        TreeNode* next = NULL;
+        TreeNode* pre = NULL;
+        while(root){
+            next = root->right;
+            root->right = pre;
+            pre = root;
+            root = next;
+        }
+        return pre;
+    }
+};
