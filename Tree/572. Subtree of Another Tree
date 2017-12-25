@@ -74,3 +74,40 @@ public:
         }
     }
 };
+
+更优思路：
+先计算树t的深度，然后遍历源树寻找深度相同的节点，然后只对这些节点进行check操作。
+22ms 23ms 32ms 解答说最快能到19ms 击败99.9%
+class Solution {
+public:
+    bool isSubtree(TreeNode* s, TreeNode* t) {
+        if(s == NULL && t == NULL) return true;
+        if(s == NULL || t == NULL) return false;
+        vector<TreeNode*> nodes;
+        bool res = false;
+        int temp = -1;
+        int tdepth = GetDepth(t,nodes,temp);
+        int maxdepth = GetDepth(s,nodes,tdepth);
+        for(auto cur:nodes){
+            res = checkissubtree(cur,t);
+            if(res) return true;
+        }
+        return res;
+        
+    }
+    int GetDepth(TreeNode* root,vector<TreeNode*>& nodes,int& targetdepth){
+        if(!root) return 0;
+        int currentdepth = 1+ max(GetDepth(root->left,nodes,targetdepth),GetDepth(root->right,nodes,targetdepth));
+        if(currentdepth == targetdepth) nodes.push_back(root);
+        return currentdepth;
+    }
+    bool checkissubtree(TreeNode* origin,TreeNode* newtree){
+        if(origin == NULL && newtree == NULL) return true;
+        if(origin == NULL || newtree == NULL) return false;
+        if(origin->val == newtree->val){
+            return checkissubtree(origin->left,newtree->left) && checkissubtree(origin->right,newtree->right); 
+        }else{
+            return false;
+        }
+    }
+};
