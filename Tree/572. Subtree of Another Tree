@@ -111,3 +111,34 @@ public:
         }
     }
 };
+
+精简代码：
+22ms
+class Solution {
+public:
+    bool isSubtree(TreeNode* s, TreeNode* t) {
+        if(!s && !t) return true;
+        if(!s || !t ) return false;
+        vector<TreeNode*> nodes;
+        bool res = false;
+        int temp = -1;
+        int tdepth = GetDepth(t,nodes,temp);
+        GetDepth(s,nodes,tdepth);
+        for(auto cur:nodes){
+            if(checkissubtree(cur,t)) return true;
+        }
+        return res;
+        
+    }
+    int GetDepth(TreeNode* root,vector<TreeNode*>& nodes,int& targetdepth){
+        if(!root) return 0;
+        int currentdepth = 1+ max(GetDepth(root->left,nodes,targetdepth),GetDepth(root->right,nodes,targetdepth));
+        if(currentdepth == targetdepth) nodes.push_back(root);
+        return currentdepth;
+    }
+    bool checkissubtree(TreeNode* origin,TreeNode* newtree){
+        if(origin == NULL && newtree == NULL) return true;
+        if(origin == NULL || newtree == NULL || origin->val != newtree->val) return false;
+        return checkissubtree(origin->left,newtree->left) && checkissubtree(origin->right,newtree->right); 
+    }
+};
