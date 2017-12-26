@@ -1,0 +1,24 @@
+题目含义：找出二叉树每层最大的元素值
+思路：层序遍历
+代码：13ms 26ms 16ms 12ms(绝大多数）
+class Solution {
+public:
+    vector<int> largestValues(TreeNode* root) {
+        vector<int> res;
+        if(!root) return res;
+        queue<TreeNode*> que;
+        que.push(root);
+        while(!que.empty()){
+            int size = que.size();
+            int max = que.front()->val;
+            for(int i = 0;i<size;++i){
+                if(que.front()->val>max) max = que.front()->val;
+                if(que.front()->left) que.push(que.front()->left);
+                if(que.front()->right) que.push(que.front()->right);
+                que.pop();
+            }
+            res.push_back(max);
+        }
+        return res;
+    }
+};
