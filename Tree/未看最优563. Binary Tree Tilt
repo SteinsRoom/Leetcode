@@ -1,0 +1,20 @@
+题目含义：定义一个节点的偏移值是它的左右子树所有节点的和的差的绝对值。求所有节点的偏移值之和
+思路1：改变了树中节点的值，比太好，但是实现方便。后序遍历，每次将左右两个节点的值加到父节点上。
+代码：12ms（最快）13ms
+class Solution {
+public:
+    int findTilt(TreeNode* root) {
+        int res = 0;
+        calsum(root,res);
+        return res;
+    }
+    void calsum(TreeNode* root,int& res){
+        if(!root) return;
+        calsum(root->left,res);
+        calsum(root->right,res);
+        int left = root->left?root->left->val:0;
+        int right = root->right?root->right->val:0;
+        res+=abs(left-right);
+        root->val = root->val+left+right;
+    }
+};
