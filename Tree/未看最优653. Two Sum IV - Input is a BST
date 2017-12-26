@@ -1,0 +1,63 @@
+题目含义：给定一颗BST，要求判断书中是否存在两个数的和等于key。
+思路1（超时）：找到第一个比key小的节点作为子树顶点，遍历每一个值作差，然后在树中寻找是否存在值为差的节点。
+代码：
+class Solution {
+public:
+    bool findTarget(TreeNode* root, int k) {
+        if(!root) return false;
+        TreeNode* firstnode = root;
+        
+        TreeNode* smalltreeroot = NULL;
+        while(root){
+            if(root->val>k)root = root->left;
+            else{
+                smalltreeroot = root;
+            }
+        }
+        if(!smalltreeroot)return false;
+        stack<TreeNode*> sta;
+        while(smalltreeroot || !sta.empty()){
+            if(smalltreeroot){
+                bool res = false;
+                sta.push(smalltreeroot->right);
+                int newkey = k-smalltreeroot->val;
+                if(newkey<smalltreeroot->val) res = findnum(smalltreeroot,newkey);
+                else res = findnum(firstnode,newkey);
+                if(res) return true;
+                root = root->left;
+            }else{
+                root = sta.top();
+                sta.pop();
+            }
+        }
+        return false;
+    }
+    bool findnum(TreeNode* root,int key){
+        if(!root) return false;
+        while(root){
+            if(root->val == key) return true;
+            if(root->val>key) root = root->left;
+            else root = root->right;
+        }
+        return false;
+        
+    }
+};
+
+
+
+思路2：DFS（仅参见答案）
+class Solution {
+    set<int> s;
+    bool dfs(TreeNode *cur, int k) {
+        if (!cur) return false;
+        if (s.count(k - cur->val)) return true;
+        s.insert(cur->val);
+        return dfs(cur->left, k) || dfs(cur->right, k);
+    }
+public:
+    bool findTarget(TreeNode* root, int k) {
+        s.clear();
+        return dfs(root, k);
+    }
+};
