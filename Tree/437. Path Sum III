@@ -1,0 +1,29 @@
+思路：
+利用前序遍历遍历所有节点，对于每个节点用递归判断是否存在路径，有路径则自增
+代码：18ms 79%
+class Solution {
+public:
+    int pathSum(TreeNode* root, int sum) {
+       if(!root) return 0;
+       stack<TreeNode*> sta;
+        int res = 0;
+        while(root || !sta.empty()){
+            if(root){
+                checksum(root,res,0,sum);
+                sta.push(root->right);
+                root = root->left;
+            }else{
+                root = sta.top();
+                sta.pop();
+            }
+        }
+        return res;
+    }
+    void checksum(TreeNode* root,int& pathnum,int parentsum,int key){
+        if(!root) return;
+        parentsum+=root->val;
+        if(parentsum==key)pathnum++;
+        checksum(root->left,pathnum,parentsum,key);
+        checksum(root->right,pathnum,parentsum,key); 
+    }
+};
