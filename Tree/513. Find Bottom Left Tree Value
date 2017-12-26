@@ -1,0 +1,25 @@
+题目含义：找出一棵树最左下的节点值
+思路1：求出最大深度，然后递归找出节点。每次递归将深度减一，找到第一个深度达到1的节点。
+代码：9ms 13ms 已最优
+时间复杂度：O（logn）到o（n）
+空间复杂度：O（logn）
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        int maxdep = GetDepth(root);
+        int res = 0;
+        bool find = false;
+        Getnum(root,res,maxdep,find);
+        return res;
+    }
+    int GetDepth(TreeNode* root){
+        if(!root) return 0;
+        return 1+ max(GetDepth(root->left),GetDepth(root->right));
+    }
+    void Getnum(TreeNode* root,int& res,int level,bool& find){
+        if(!root) return;
+        Getnum(root->left,res,level-1,find);
+        if(level==1) {res = root->val;find = true;return;}
+        if(!find)Getnum(root->right,res,level-1,find);
+    }
+};
