@@ -1,6 +1,6 @@
 思路：
 利用前序遍历遍历所有节点，对于每个节点用递归判断是否存在路径，有路径则自增
-代码：18ms 79%
+代码：18ms 79% 22ms 19ms（大多数）
 class Solution {
 public:
     int pathSum(TreeNode* root, int sum) {
