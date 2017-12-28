@@ -1,0 +1,21 @@
+题目含义：一个序列由只有0的单字符和有两个数字10或11的双字符构成，其最后一位必是0.问该序列的最后一位是单字符还是双字符。
+思路：根据最后两位是否是00判断单字符。不是则遍历整个序列，是1开头向后跳两位，是0向后跳一位，直至到达序列最后一位返回true，否则返回false
+代码：3ms 6ms 
+class Solution {
+public:
+    bool isOneBitCharacter(vector<int>& bits) {
+        int size = bits.size();
+        if(size == 1) return true;
+        if(bits[size-1] == 0 && bits[size-2] == 0) return true;
+        for(int i = 0;i<size;){
+            if(i == size-1) return true;
+            //int j = i+1;
+            //if((bits[i] == 1 && bits[j] == 1) || (bits[i] == 1 && bits[j] == 0)) {i+=2;continue;}
+            //if((bits[i] == 0 && bits[j] == 1) || (bits[i] == 0 && bits[j] == 0)) {i+=1;continue;}
+            if(bits[i] == 1) {i+=2;continue;}
+            else {i+=1;continue;}
+        }
+        return false;
+        
+    }
+};
