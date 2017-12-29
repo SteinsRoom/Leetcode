@@ -1,0 +1,31 @@
+代码：42ms 36ms 39ms 最快22ms
+class Solution {
+public:
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        int rows = grid.size();
+        if(rows ==0)return 0;
+        int maxsize = 0;
+        int cols = grid[0].size();
+        set<pair<int,int>> island;
+        for(int i = 0;i<rows;++i){
+            for(int j = 0;j<cols;++j){
+                   int temp = findisland(grid,i,j,cols,rows,island);
+                if(temp>maxsize) maxsize  = temp;
+            }
+        }
+        return maxsize;
+    }
+    int findisland(vector<vector<int>>& grid,int i,int j,int& cols,int&rows,set<pair<int,int>>& island){
+        if(i>=0&&i<rows&&j>=0&&j<cols){
+            if(grid[i][j] == 1 && island.count(pair<int,int>(i,j)) == 0){
+                island.insert(pair<int,int>(i,j));
+                return 1+findisland(grid,i+1,j,cols,rows,island)+
+                findisland(grid,i,j+1,cols,rows,island)+
+                findisland(grid,i-1,j,cols,rows,island)+
+                findisland(grid,i,j-1,cols,rows,island);
+            }
+        }
+        return 0;
+        
+    }
+};
