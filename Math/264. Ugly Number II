@@ -1,0 +1,23 @@
+题目含义：定义丑数是质因子仅为2,3,5的整数，将1算作第一个丑数，求按从小到大排列的第n个丑数。
+思路：设计三个队列，每个队列的值分别是亲一个丑数乘以2,3,5，每次从这三个队列中选择最小的一个作为新的丑数，并且三个队列中队头等于这个丑数的都将index
+向后移动一位，重复上述过程直至遇到第n个。
+代码：9ms 6ms
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        vector<int> res(1,1);
+        int m1 = 0,m2 = 0,m3 = 0;
+        while(res.size()<n){
+            int l1 = res[m1]*2;
+            int l2 = res[m2]*3;
+            int l3 = res[m3]*5;
+            int minum = min(l1,min(l2,l3));
+            if(minum ==l1) ++m1;
+            if(minum ==l2) ++m2; //所有相同的值都要++，避免重复
+            if(minum == l3) ++m3;
+            res.push_back(minum);
+        }
+        return res.back();
+    }
+    
+};
