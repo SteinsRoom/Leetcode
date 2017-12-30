@@ -1,0 +1,22 @@
+代码：3ms 最快
+class Solution {
+public:
+    vector<int> selfDividingNumbers(int left, int right) {
+        vector<int> res;
+        for(int i = left;i<=right;++i){
+            int temp = i;
+            while(temp){
+                int j = temp%10;
+                if(j!=0 && i%j == 0){
+                    temp /=10;
+                    continue;
+                }else{
+                    break;
+                }
+            }
+            if(temp == 0) res.push_back(i);
+            continue;
+        }
+        return res;
+    }
+};
