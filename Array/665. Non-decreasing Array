@@ -1,0 +1,23 @@
+题目含义：给定一个数组，判断该数组是否是递增的（非单调），如果不是能否仅改变改变一个数字使其变成递增的。
+思路：参看了答案：找到第一个值比它前一个小的数，然后判断数组在分别去掉了这两个数中的一个后是否为递增（可以调用is_sorted(begin,end）来快速判断是否递增
+代码：36ms
+class Solution {
+public:
+    bool checkPossibility(vector<int>& nums) {
+        int size = nums.size();
+        if(size <3) return true;
+        for(int i = 1;i<size;++i){
+            if(nums[i]>=nums[i-1]){
+                continue;
+            }else{
+                int temp = nums[i-1];
+                nums[i-1] = nums[i];
+                if(is_sorted(nums.begin(),nums.end())) return true;
+                nums[i] = nums[i-1] = temp;
+                if(is_sorted(nums.begin(),nums.end())) return true;
+                return false;
+            }
+        }
+        return true;
+    }
+};
