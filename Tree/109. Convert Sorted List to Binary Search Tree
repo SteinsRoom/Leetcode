@@ -1,0 +1,43 @@
+题目含义：给定一个链表，将其转化为一颗平衡二叉搜索树
+思路：还是按照普通数组的思路，寻找中点，利用递归来实现左右节点。寻找中点的方法是使用快慢指针，fast与fast-》next均不为空，则继续寻找。并令pre为slow的
+前一节点，找到中点后将pre->next置空断开链表，接着在分成的两部分中寻找中点作为新的root节点的左右子节点。
+
+注意：避免断开链表破坏原有链表结构，可以采用开始时保存下一个完整链表的方法，也可以避免使用pre节点，改为使用
+代码：23ms
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* sortedListToBST(ListNode* head) {
+        if(!head) return NULL;
+        if(!head->next) return new TreeNode(head->val);
+        auto pre= head;
+        auto slow = head;
+        auto fast = head;
+        while(fast && fast->next){
+            pre = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        pre->next = NULL;
+        auto root = new TreeNode(slow->val);
+        root->left = sortedListToBST(head);
+        root->right = sortedListToBST(slow->next);
+        return root;
+    }
+};
