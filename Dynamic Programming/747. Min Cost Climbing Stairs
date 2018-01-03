@@ -1,0 +1,17 @@
+思路：totalcost[i] = min((totalcost[i-1]+cost[i-1]),(totalcost[i-2]+cost[i-2]));
+      totalcost[i] = cost[i] +min(totalcost[i+1],totalcost[i+2])
+代码1：超时
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        int size = cost.size();
+        return min(mincost(cost,0,size),mincost(cost,1,size));
+    }
+    int mincost(vector<int>& cost,int step,int& size){
+        if(step<size){
+            return cost[step]+min(mincost(cost,step+1,size),mincost(cost,step+2,size));
+        }
+        return 0;
+    }
+};
+
