@@ -15,3 +15,21 @@ public:
     }
 };
 
+代码2：用第二个递推公式（状态转移方程？） 13ms
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        int size = cost.size();
+        int totalcost_1 = cost[0];
+        int totalcost_2 = cost[1];
+        int totalcost_3 = 0;
+        for(int i = 2;i<size;++i){
+            totalcost_3 = min(totalcost_1,totalcost_2)+cost[i];
+            totalcost_1 = totalcost_2;
+            totalcost_2 = totalcost_3;
+
+        }
+        return min(totalcost_1,totalcost_2);
+    }
+};
+
