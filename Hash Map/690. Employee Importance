@@ -1,0 +1,57 @@
+题目含义：给定一个employee的数据结构，里面包含它的id、val和子员工的id列表，要求给出所有与他相关联的员工的val和
+思路1：通过遍历查找id，通过DFS递归求解
+代码：较慢 25ms 26ms
+class Solution {
+public:
+    /*int getImportance(vector<Employee*> employees, int id) {
+        int res = 0;
+        int size = employees.size();
+        for(int i = 0;i<size;++i){
+            if(employees[i]->id == id){
+                res+=employees[i]->importance;
+                int num = employees[i]->subordinates.size();
+                for(int j = 0;j<num;++j){
+                    //int key = (employees[i]->subordinates)[j];
+                    res+=getImportance(employees,(employees[i]->subordinates)[j]);
+                }
+                break;
+            }
+        }
+        return res;
+    }*/
+}
+
+思路2：利用map存储id与指针的关系，不用遍历查找节省时间
+代码：22ms 22ms
+/*
+// Employee info
+class Employee {
+public:
+    // It's the unique ID of each node.
+    // unique id of this employee
+    int id;
+    // the importance value of this employee
+    int importance;
+    // the id of direct subordinates
+    vector<int> subordinates;
+};
+*/
+class Solution {
+public:  
+    int getImportance(vector<Employee*> employees, int id) {
+        int res = 0;
+        int size = employees.size();
+        unordered_map<int,Employee*> idmap;
+        for(auto employee:employees)
+            idmap.insert(pair<int,Employee*>(employee->id,employee));
+        
+        return DFS(idmap,id);
+    }
+    int DFS(unordered_map<int,Employee*>& idmap,int id){
+        int res = idmap[id]->importance;
+        for(auto it:idmap[id]->subordinates)
+            res+=DFS(idmap,it);
+        return res;
+    }
+    
+};
