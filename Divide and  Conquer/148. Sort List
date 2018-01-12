@@ -1,5 +1,7 @@
 题目含义：给定链表，要求nlogn时间，常数空间排序
 思路：非常数 递归
+递归的空间复杂度不是常数！
+这种方法是自顶向下，满足条件的算法是自底向上
 class Solution {  50ms 55ms 60ms 较差
 public:
     ListNode* sortList(ListNode* head) {
