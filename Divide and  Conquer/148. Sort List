@@ -1,0 +1,43 @@
+题目含义：给定链表，要求nlogn时间，常数空间排序
+思路：非常数 递归
+class Solution {  50ms 55ms 60ms 较差
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == NULL)return NULL;
+        if(head->next == NULL){return head;}
+        auto p1 = head;
+        auto p2 = head;
+        ListNode* pre = NULL;
+        while(p2 && p2->next){
+            pre = p1;
+            p1 = p1->next;
+            p2 = p2->next->next;
+        }
+        if(pre) pre->next = NULL;
+        //else p1->next = NULL;
+        auto head1 = sortList(head);
+        auto head2 = sortList(p1);
+        return Merge(head1,head2);
+    }
+    ListNode* Merge(ListNode* head1,ListNode* head2){
+        auto newhead = new ListNode(0);
+        auto pre = newhead;
+        while(head1 && head2){
+            if(head1->val > head2->val){
+                pre->next = head2;
+                pre = pre->next;
+                head2 = head2->next;
+            }else{
+                pre->next = head1;
+                pre = pre->next;
+                head1 = head1->next;
+            }
+        }
+        if(head1){
+            pre->next = head1;
+        }else if(head2){
+            pre->next = head2;
+        }
+        return newhead->next;
+    } 
+};
