@@ -43,3 +43,91 @@ public:
         return newhead->next;
     } 
 };
+
+
+
+自底向上：
+对于奇数个的边界没想好
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(!head || head->next ==NULL) return head;
+        int length = 0;
+        auto p1 = head;
+        while(p1) {p1 = p1->next;length++;}
+        auto newhead = new ListNode(0);
+        auto pre = newhead;
+        pre->next = head;
+        for(int step = 1;step<length;){
+            pre = newhead;
+            auto start = pre->next;
+            auto mid = pre->next;
+            auto end = pre->next;
+            ListNode* after = NULL;
+            int low = 0;
+            while(low+2*step-1<length && low+4*step-1<length){
+                int index = 1;
+                auto prenode = start;
+                while(index<step){
+                    prenode = prenode->next;
+                    index++;
+                }
+                mid =prenode->next;
+                prenode->next = NULL;
+                end = mid;
+                index = 1;
+                while(index<step){
+                    end = end->next;
+                    index++;
+                }
+                after = end->next;
+                end->next = NULL;
+                pre->next = Merge(start,mid,end);
+                end->next = after;
+                pre = end; 
+                start = after; 
+                low+=2*step;
+                //return start;
+            }
+            step*=2;
+            //问题所在！！！step<<1;
+            
+            if(low+step<=length){
+                int index = 1;
+                auto prenode = start;
+                while(index<step){
+                    prenode = prenode->next;
+                    index++;
+                }
+                mid =prenode->next;
+                prenode->next = NULL;
+                pre->next = Merge(start,mid,end);
+            } 
+        }
+        return newhead->next;
+    }
+    ListNode* Merge(ListNode* head1,ListNode* head2,ListNode*& end){
+        auto newhead = new ListNode(0);
+        auto pre = newhead;
+        while(head1 && head2){
+            if(head1->val > head2->val){
+                pre->next = head2;
+                pre = pre->next;
+                head2 = head2->next;
+            }else{
+                pre->next = head1;
+                pre = pre->next;
+                head1 = head1->next;
+            }
+        }
+        if(head1){
+            pre->next = head1;
+        }else if(head2){
+            pre->next = head2;
+        }
+        while(pre && pre->next) pre = pre->next;
+        end = pre;
+        return newhead->next;
+        
+    } 
+};
