@@ -1,5 +1,5 @@
 题目含义：给定一个数组，要求返回第k大的数
-思路1：快速排序 归并
+思路1：快速排序 归并 (使用内建的sort也非常快，12ms）手动的80多ms
 思路2：优化快排：一趟快排后判断中间的值得位置是否等于k-1，根据大小关系调整下一次快排的区间，可以节省排序次数，但实际代码没比全快排快多少
 代码：非常慢 80ms 至78ms 最快小于9ms
 class Solution {
@@ -43,4 +43,11 @@ public:
     }*/
 }
 
-思路3：
+思路3：使用内建的优先级队列，速度很快，12ms
+代码：
+int findKthLargest(vector<int>& nums, int k) {
+        priority_queue<int> pq(nums.begin(), nums.end());
+        for (int i = 0; i < k - 1; i++)
+            pq.pop(); 
+        return pq.top();
+    }
