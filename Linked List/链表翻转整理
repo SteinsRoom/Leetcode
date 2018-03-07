@@ -1,0 +1,114 @@
+1.直接翻转单链表
+是最基础的反转链表，分为递归与非递归做法。
+非递归做法：
+ListNode* reverseList(ListNode* head) {
+        if(head == NULL || head->next == NULL) return head;
+        ListNode* pCur = head;
+        ListNode* pNext = head;
+        head = NULL;
+        while(pCur){
+            pNext = pCur->next;
+            pCur->next = head;
+            head = pCur;
+            pCur = pNext;
+        }
+        return head;
+    }
+
+递归做法：
+
+2.给定一个单链表和区间m，n，要求将链表中区间m至n中的部分链表翻转
+反转过程中需要的额外节点是翻转链表的前后节点，翻转链表中的开始结束节点。调用上面的程序完成翻转后将其加入到原有链表当中。
+非递归： 稍微有些慢
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        if(head == NULL || m == n) return head;
+        ListNode* pNewHead = head;
+        ListNode* pPreHead = NULL;
+        ListNode* pNextNode = NULL;
+        ListNode* pStartHead = head;
+        int count = 1;
+        while(count<m){
+            pPreHead = head;
+            head = head->next;
+            count++;
+        }
+        pStartHead = head;
+        while(count<n){
+            head = head->next;
+            count++;
+        }
+        pNextNode = head->next;
+        head->next = NULL;
+        ListNode* pReversedHead = reverseList(pStartHead);
+        if(pPreHead)pPreHead->next = pReversedHead;
+        else pNewHead = pReversedHead;
+        if(pNextNode)pStartHead->next = pNextNode;
+        return pNewHead;    
+    }
+    ListNode* reverseList(ListNode* head) {
+        if(head == NULL || head->next == NULL) return head;
+        ListNode* pCur = head;
+        ListNode* pNext = head;
+        head = NULL;
+        while(pCur){
+            pNext = pCur->next;
+            pCur->next = head;
+            head = pCur;
+            pCur = pNext;
+        }
+        return head;
+    }
+};
+
+3.分段翻转链表，对于不够k长的链表保持不变。
+需要的额外节点同样是反转链表的前后节点，翻转链表中的开始结束节点。需要bool型变量标识是否是第一次翻转来确定整个翻转后的头结点。反转后需要将其加入到原有的l
+链表中。
+非递归代码：
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if(head == NULL || k == 1) return head;
+        ListNode* pNewHead = head;
+        ListNode* pLastHead = NULL;
+        ListNode* pStartNode = head;
+        ListNode* pNextHead = NULL;
+        bool IsFirstRound = true;
+        while(pStartNode){
+            int count = 0;
+            head= pStartNode;
+            while(head && count<k-1){
+                head = head->next;
+                count++;
+            }
+            if(head){
+                pNextHead = head->next;
+                head->next = NULL;
+                ListNode* pReversedHead = reverselist(pStartNode);
+                if(IsFirstRound) {pNewHead = pReversedHead;
+                     IsFirstRound = false;}
+                if(pLastHead) pLastHead->next = pReversedHead;
+                if(pNextHead) pStartNode->next = pNextHead;
+                pLastHead = pStartNode;
+                pStartNode = pNextHead;
+            }else 
+                break;
+        }
+        return pNewHead;
+    } 
+    ListNode* reverselist(ListNode* head){
+        if(head == NULL || head->next == NULL) return head;
+        ListNode* pCur = head;
+        ListNode* pNext = head;
+        head = NULL;
+        while(pCur){
+            pNext = pCur->next;
+            pCur->next = head;
+            head = pCur;
+            pCur = pNext;
+        }
+        return head;
+    }
+};
+
