@@ -1,0 +1,33 @@
+题目：给定一个字符串，求其中回文字符串的个数，要求:判定的字符串必须是连续的
+另外一种：所判定的字符串可以是不连续的，即可从字符串中任意取字符组成字符串
+思路1：对于要求连续的：
+        dp[i][j] 等于不含首字母加上不含尾字母减去中间的个数（当s[i]!=s[j]）当s[i]==s[j] 需要判定中间的是否是回文串，是则在结果上加一
+      对于不要求连续的
+        dp[i][j] 等于不含首字母加上不含尾字母减去中间的个数（当s[i]!=s[j]）当s[i]==s[j] 需要加上首尾组成的一个回文串，再加上中间的能组成的个数
+思路1：
+为了得到中间的是否是回文串用另外一个二维bool数组记录当前长度的回文串性质
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int len = s.length();
+        vector<vector<int>> dp(len,vector<int>(len,0)); 
+        vector<vector<bool>> ispal(len,vector<bool>(len,true)); 
+        for(int j = 0;j<len;++j){
+            dp[j][j] = 1;
+            for(int i = j-1;i>=0;--i){
+                if(s[i] == s[j]){
+                    dp[i][j] = dp[i+1][j]+dp[i][j-1]-dp[i+1][j-1];
+                    if(ispal[i+1][j-1])
+                        dp[i][j]+=1;
+                    else {
+					    ispal[i][j] = false;
+				    }
+                }else{
+                    dp[i][j] = dp[i+1][j]+dp[i][j-1]-dp[i+1][j-1];
+                    ispal[i][j] = false;
+                }
+            }
+        }
+        return dp[0][len-1];
+    }
+};
