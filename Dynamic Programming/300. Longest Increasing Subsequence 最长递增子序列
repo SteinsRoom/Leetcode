@@ -1,0 +1,28 @@
+
+思路1：O(n2)
+dp[i] = max(dp[0]——dp[j])+1; j属于0——i-1,dp[i]代表以i结尾的最大递增子序列长度。最后返回的结果是dp数组中的最大值。
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        if(nums.empty()) return 0;
+        int size = static_cast<int>(nums.size());
+        vector<int> dp(size,0);
+        dp[0] = 1;
+        int res = 1;
+        for(int i = 1;i<size;++i){
+            int max = 1;
+            for(int j = 0;j<i;++j){
+                if(nums[j]<nums[i]){
+                    if(dp[j]+1>max)
+                        max = dp[j]+1;
+                }
+            }
+            dp[i] = max;
+            if(max>res)
+                res = max;
+        }
+        return res;
+    }
+};
+
+
