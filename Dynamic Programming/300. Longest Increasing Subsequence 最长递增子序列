@@ -25,4 +25,40 @@ public:
     }
 };
 
+O(nlogn)
+维护一个dp 当前元素小于队头则替换队头，大于队尾则插入，等于队头队尾不处理 位于二者之间则用二分查找找到第一个不小于该值的数，并将其替换.注意这里的二分查找
+不同于通常的二分查找，需要单独去记忆。这里的策略是mid小于target则low+1，否则将high置为mid。若为不大于则换为大于，high-1，否则low为mid
+
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) {
+        if(nums.empty()) return 0;
+        int size = static_cast<int>(nums.size());
+        //sort(nums.begin(),nums.end());
+        vector<int> dp;
+        dp.push_back(nums[0]);
+        for(int i = 1;i<size;++i){
+            if(nums[i]<dp[0]){
+                dp[0] = nums[i];
+            }else if(nums[i]>dp[dp.size()-1]){
+                dp.push_back(nums[i]);
+            }else if((nums[i] == dp[0])   || (nums[i] == dp[dp.size()-1])){
+                continue;
+            }else{
+                int low = 0,high = dp.size()-1;
+                while(low<high){
+                    int mid = low+(high-low)/2;
+                    if(dp[mid]<nums[i]){
+                        low = mid+1;
+                    }else{
+                        high = mid;
+                    }
+                }
+                    dp[high] = nums[i];
+            }
+        }
+        return dp.size();
+    }
+};
+
 
