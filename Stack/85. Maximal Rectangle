@@ -1,0 +1,55 @@
+题目含义：给定一个矩阵，矩阵中元素由01构成，找出其中由1组成的面积最大的矩形的面积。
+思路：
+左程云书中原题，是84题的扩展，方法是记录下每一行中累积的最大高度line，对于每一行求一次能够扩展的最大面积，最后返回面积最大值。求每一行的line的方法是先声明
+空的全0vector，对于每一行，如果行中元素值为1则line+1，否则置为0.
+代码：
+class Solution {
+public:
+    int maximalRectangle(vector<vector<char>>& matrix) {
+        int rows = matrix.size();
+        if(rows == 0) return 0;
+        int cols = matrix[0].size();
+        vector<int> line(cols,0);
+        int max = 0;
+        for(int i = 0;i<rows;++i){
+            for(int j =0;j<cols;++j){
+                if(matrix[i][j] == '1'){
+                    line[j]+=1; 
+                }else{
+                    line[j]=0;
+                }
+            }
+            int res = maximalRec(line);
+            if(res>max) max = res;
+        }
+        return max;
+    }
+    int maximalRec(vector<int>& line){
+        int size = line.size();
+        if(size == 0) return 0;
+        int max = 0;
+        stack<int> sta;
+        for(int i = 0;i<size;++i){
+            if(sta.empty() || (line[i]>line[sta.top()])){
+                sta.push(i);
+            }else{
+                while(!sta.empty() && (line[i]<=line[sta.top()])){
+                    int mid = sta.top();
+                    sta.pop();
+                    int pre = sta.empty()?-1:sta.top();
+                    int res = (i-pre-1)*line[mid];
+                    if(res>max) max = res;
+                }
+                sta.push(i);
+            }
+        }
+        while(!sta.empty()){
+            int mid = sta.top();
+            sta.pop();
+            int pre = sta.empty()?-1:sta.top();
+            int res = (size-pre-1)*line[mid];
+            if(res>max) max = res; 
+        }
+        return max;
+    }
+};
