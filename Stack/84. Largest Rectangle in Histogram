@@ -1,0 +1,40 @@
+题目含义：给定一个序列，每个值代表一个矩形的高度，问其中最大的矩形面积
+思路：左程云书上求矩阵中最大矩形的简化，相当于只有一行的情况。具体做法是利用栈，栈中存放序列的下标，栈空或者当前下标对应的高度大于栈顶元素对应的高度则入栈，
+否则对所有小于等于当前元素对应高度的栈中元素出栈，每次出栈对出栈元素计算其所能左右扩展的最大距离从而求出弹出元素所能扩展出的最大面积。假设当前元素为i，弹出元素
+为mid，弹出后的栈顶为pre(若栈为空则此值为-1)，则右侧能扩展的最大距离位置为k-1(可能小于实际能扩展的，但是在元素被弹出时可以计算得到，此时求出的是一个临时值）
+，左侧能扩展的最大距离位置为pre+1,所以长度为(k-1-mid)+(mid-pre-1)+1 = k-pre-1,能扩展的面积为（k-pre-1）*mid所对应的高度，找到最大值。
+序列遍历完后可能栈中还有元素，对于剩余的元素可以认为当前元素是最后一个元素的下标加1，也即序列的长度size，依次将栈中元素弹出计算可扩展的最大面积，最后将最大面积
+的值返回。
+代码：
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        int size = static_cast<int>(heights.size());
+        if(size == 0) return 0;
+        if(size == 1) return heights[0];
+        stack<int> sta;
+        int max = 0;
+        for(int i = 0;i<size;++i){
+            if(sta.empty() || (heights[i] > heights[sta.top()])){
+                sta.push(i);   
+            }else{
+                while((!sta.empty()) && (heights[i] <= heights[sta.top()])){
+                    int mid = sta.top();
+                    sta.pop();
+                    int pre = sta.empty()? -1:sta.top();
+                    int res = (i-pre-1)*heights[mid];
+                    if(res>max) max = res;
+                }
+                sta.push(i);
+            }
+        }
+        while(!sta.empty()){
+            int mid = sta.top();
+            sta.pop();
+            int pre = sta.empty()? -1:sta.top();
+            int res = (size-pre-1)*heights[mid];
+            if(res>max) max = res; 
+        }
+        return max;    
+    }
+};
